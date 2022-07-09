@@ -1,8 +1,3 @@
-// Inheritance
-
-// Polymorphism - Poly means many and morph means forms -> many forms
-//  Its a way of representing the object in a different form
-
 class Person {
     name: string;
     constructor(name) {
