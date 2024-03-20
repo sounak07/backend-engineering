@@ -29,7 +29,7 @@ So they began to explore building a sharded solution on top of figma's verticall
 
 Splitting a single table or a group of tables into multiple database instances was the key. Once sharding in supported at the application layer , any number of shard splits can be at the physical level. 
 
-![[Screenshot 2024-03-19 at 10.57.44 PM.png]]
+![alt text](/resources/Screenshot%202024-03-19%20at%2010.57.44%20PM.png)
 
 Sharding is difficult because as data gets spread across multiple instances, we lose many reliability and consistency features of ACID. There are challenges like - 
 - Certain queries being inefficient , complex to implement and something impossible to support.
@@ -46,6 +46,9 @@ They wanted to lay down the pathway to sharding of multiple tables or group of t
 
 **Logical sharding** - Figma separated logical sharding with physical sharding which allowed safer and low cost logical sharding rollout with database views and testing before the actual physical failover, which basically refers to the eventual transition from logical sharding to physical sharding.
 
-**DBProxy** -  A dbProxy was built whose job was to intercept the incoming queries from application layer and router them to the specific shards as required. It has the ability to parse and execute 
+**DBProxy query engine** -  A DBProxy was built whose job was to intercept the incoming queries from application layer and router them to the specific shards as required. It has the ability to parse and execute complex horizontally sharded queries. 
 
+**Shadow Application readiness** -  An application readiness tool was built whose jobs was to predict how live traffic would behave with different sharded keys and help application teams understand what to change and fix in order to adopt sharding. 
+
+**Full Logical Replication** - Figma chose to replicate the entire dataset instead of a “filtered logical replication” (where only a subset of data is copied to each shard) but allow write/read only to a particular subset of the data.
 
