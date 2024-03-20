@@ -1,3 +1,5 @@
+## How Figma’s databases team lived to tell the scale
+
 #### Background
 
 Figma's Postgres database were already vertically partitioned. Groups of related tables like `Figma files` or `Organizations` were further split into their own vertical partitions. This allowed incremental scaling and enough runway for time ahead. 
