@@ -1,4 +1,4 @@
-### How Canva Supports Real-Time Collaboration for 135 Million Monthly Users
+## How Canva Supports Real-Time Collaboration for 135 Million Monthly Users
 
 
 HTTPS is not a real time protocol enough for collaboration, so we need a different protocol bidirectional protocol. 

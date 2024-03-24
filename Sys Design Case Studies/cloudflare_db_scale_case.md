@@ -1,4 +1,4 @@
-Cloudflare handles 20% of total internet traffic. They do it with just 15 postgres clusters. How ?
+## Cloudflare handles 20% of total internet traffic. They do it with just 15 postgres clusters. How ?
 
 #### PostgreSQL Scalability
 

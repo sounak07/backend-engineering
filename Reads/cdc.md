@@ -1,4 +1,4 @@
-### Change Data capture
+## Change Data capture
 
 Change Data capture is a form of data replication technique which is used to update or trigger certain events based on a change in the database. There is a source database and a target database/system where the data or the event gets sent. 
 
