@@ -66,4 +66,4 @@ The concept of Colos were also introduced which minimised the work of applicatio
 
 The logical implementation was separated from Physical implementation to de-risk the migration. The logical implementation allowed the database to logically behave in a way that they are shared but physically there just the same database. This allowed them to test how it works and fix bugs by just changing the configs which allowed low-risk percentage based rollout. Also Rolling back logical shards is way easier than physical shards which is complex to ensure data consistency. 
 
-
+![alt text](/resources/Screenshot%202024-03-25%20at%2010.28.59%20PM.png)
