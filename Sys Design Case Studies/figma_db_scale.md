@@ -60,7 +60,7 @@ The key factor of sharding is to decide the shard key. Horizontal sharding has a
 
 Figma considered using a single shard key for all tables but there was no candidate.Adding a new one would bring a lot of overheads around migration and application layer changes so they chose a couple of Keys like UserID , OrgID or FileID as pretty much all tables has any of these keys but these are auto incrementing or  Snowflake timestamp-prefixed ID keys so that would have brought shard hotspots if these keys were used for distribution. So figma chose the hash function of the sharding key. Considering its random enough it make the data evenly distributed. This would cause the range issue, which was a tradeoff they were ok with.
 
-The concept of Colos were also introduced which minimised the work of application developers.
+The concept of Colos were also introduced which minimised the work of application developers since cross-table joins and full transactions when restricted to a single sharding key, so no extra work was needed.
 
 #### The "logical" Implementation
 
