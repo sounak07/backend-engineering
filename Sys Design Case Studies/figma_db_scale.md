@@ -54,3 +54,16 @@ They wanted to lay down the pathway to sharding of multiple tables or group of t
 
 **Full Logical Replication** - Figma chose to replicate the entire dataset instead of a “filtered logical replication” (where only a subset of data is copied to each shard) but allow write/read only to a particular subset of the data.
 
+#### Sharding Implementation
+
+The key factor of sharding is to decide the shard key. Horizontal sharding has a lot of constraints in models that resolve around shard key.  e.g. - Foreign keys only work if its the shard key. The shard key should be chosen in a way so that the data is evenly distributed across the shards to avoid shard hotspots. 
+
+Figma considered using a single shard key for all tables but there was no candidate.Adding a new one would bring a lot of overheads around migration and application layer changes so they chose a couple of Keys like UserID , OrgID or FileID as pretty much all tables has any of these keys but these are auto incrementing or  Snowflake timestamp-prefixed ID keys so that would have brought shard hotspots if these keys were used for distribution. So figma chose the hash function of the sharding key. Considering its random enough it make the data evenly distributed. This would cause the range issue, which was a tradeoff they were ok with.
+
+The concept of Colos were also introduced which minimised the work of application developers.
+
+#### The "logical" Implementation
+
+The logical implementation was separated from Physical implementation to de-risk the migration. The logical implementation allowed the database to logically behave in a way that they are shared but physically there just the same database. This allowed them to test how it works and fix bugs by just changing the configs which allowed low-risk percentage based rollout. Also Rolling back logical shards is way easier than physical shards which is complex to ensure data consistency. 
+
+
