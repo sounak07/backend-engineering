@@ -72,19 +72,21 @@ The logical implementation was separated from Physical implementation to de-risk
 
 Earlier application layer was connecting directly to the connection pooling layer but Figma needed something more sophisticated to parse, execute more complex sharded queries. DBProxy , a lightweight query engine was built is order to support the same. It also helped support things like load-shedding, transaction support etc. 
 
-![[Screenshot 2024-03-26 at 9.43.22 PM.png]]
+![alt text](/resources/Screenshot%202024-03-26%20at%209.43.22%20PM.png)
+
 
 It had a few jobs - 
 - Intercept and convert the incoming query into an AST.
 - Logical planner to identify the shard key and type of query.
 - Physical planner to re-write the existing queries into sharded queries as per the shard key and direct them to the correct shard. 
 
-![[Screenshot 2024-03-26 at 9.44.22 PM.png]]
+![alt text](/resources/Screenshot%202024-03-26%20at%209.44.22%20PM.png)
+
 
 Now some queries are simpler then the others like queries with shard key, since its easier to direct them to the correct shard but queries with no shard key needed to perform ***scatter-gather*** in order fetch the correct shard.In ***scatter-gather*** we need to fan out the query to all shards (the scatter phase) and then aggregate back results (the gather phase).
 But performing too many ***scatter-gather*** could actually end up making the database even slower which would nullify the effect of sharding. 
 
-![[Screenshot 2024-03-26 at 9.50.14 PM.png]]
+![alt text](/resources/Screenshot%202024-03-26%20at%209.50.14%20PM.png)
 
 Full SQL compatibility with DBProxy would have been just another so postgres , they wanted to minimise the complexity of API and the re-write of unsupported queries for the application devs. So a *shadow planning framework* were devs can specify the sharding execution plans for each table and see how its behaving on top of live traffic. This data stored as execution plans and raw queries was then used to come up with a query language that supported 90% of the existing queries.
 
@@ -95,7 +97,8 @@ Load tests were performed to ensure no performance overheads were brought in wit
 
 #### Tackling our topology 
 
-![[Screenshot 2024-03-26 at 10.24.28 PM.png]]
+![alt text](/resources/Screenshot%202024-03-26%20at%2010.24.28%20PM.png)
+
 
 Topology library allowed figma to find a way to map the shard keys with the table and also to map a logical shard ID (123) to the appropriate logical and physical databases.
 
