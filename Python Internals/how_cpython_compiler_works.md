@@ -4,14 +4,14 @@
 
 Compiler is basically a program that converts code from one language into a equivalent code of another language. Mostly from human readable code into machine code. 
 
-![[Screenshot 2024-03-15 at 10.13.00 PM.png]]
+![alt text](/resources/Screenshot%202024-03-15%20at%2010.13.00%20PM.png)
 
 The compiler architecture has 3 stage design as above. The frontend converts the code into a Intermediate Representation (IR) which gets passed to an optimizer which then passes the optimized IR to the backend to be converted into machine code.
 The main advantage of this 3 stage design is if we choose a non language and non target machine specific IR , it can act as a plug play in which a frontend is need to convert code to IR and a backend to convert the IR to machine code. 
 
 CPython does not need to support multiple languages just Python and CPython VM.
 
-![[Screenshot 2024-03-15 at 10.55.21 PM.png]]
+![alt text](/resources/Screenshot%202024-03-15%20at%2010.55.21%20PM.png)
 
 The above is the architecture of CPython compiler. Since 3.9 the need for parser to generate parse tree is also not there. Its directly generates the AST. 
 
@@ -41,7 +41,7 @@ The parse tree is converted to AST before giving it to compiler.
 
 The Python grammar is complex. It looks simple because it gets represented in 200 lines thats because symbols are represented as tokens not as single characters. These tokens represent a group of characters making the whole set shorter. The tokens are represented by position in code and type as seen below.
 
-![[Screenshot 2024-03-18 at 7.15.27 PM.png]]
+![alt text](/resources/Screenshot%202024-03-18%20at%207.15.27%20PM.png)
 
 The tokenizer play a crucial role in parsing the chars in token parser can understand. It relies on io module to identify the charset , if not provided with it defaults back to `utf-8` . It opens and reads its contents by calling the `readline()` function. This function returns a unicode string. The characters the tokenizer reads are just bytes in the UTF-8 representation of that string (or EOF). 
 While defining numbers and names directly in the grammar is feasible but complex, expressing the significance of indentation without the tokenizer would require a context-sensitive grammar, making parsing more difficult. 
