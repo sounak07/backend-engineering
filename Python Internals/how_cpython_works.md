@@ -1,4 +1,4 @@
-## How CPython Works ?
+## How CPython VM Works ?
 
 What happens when we do ?
 
