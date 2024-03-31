@@ -40,7 +40,7 @@ In case if you create a table without a primary key, SQL is going to create one 
 
 Suppose we have a table as below 
 
-![[Screenshot 2024-03-25 at 11.11.48 PM.png]]
+![alt text](/resources/Screenshot%202024-03-25%20at%2011.11.48%20PM.png)
 
 Now we add name and secondary key(index it) and we try to find Zoe. Now we will follow the B+ Tree structure to find the name. But at this point we want the id and email so what now ? 
 The secondary key B Tree+ leaf node actually stores the pointer back to primary key. As we know every leaf node of primary index tree contains all the data of the table so we got our data. 
@@ -81,13 +81,13 @@ So while trying to decide whether to put index on a col , checking the selectivi
 
 Prefix indexes refers to the indexes where we index a part of the value of a row. Suppose we have really long strings like urls, hashes, ulids etc, we index only the prefix of the value to make the index smaller and use that prefix to let the database filter out the ones that match the prefix and then remove that ones that don't match with the given data. So first filter by prefix and then filter by full string. 
 
-![[Screenshot 2024-03-31 at 8.32.27 PM.png]]
+![alt text](/resources/Screenshot%202024-03-31%20at%208.32.27%20PM.png)
 
 So from the above picture in line 3, we can see how we choose to index the first x characters of the value, 5 in this case.
 
 *How many chars to index though ?*
 
-![[Screenshot 2024-03-31 at 8.38.25 PM.png]]
+![alt text](/resources/Screenshot%202024-03-31%20at%208.38.25%20PM.png)
 
 So as we can see we are checking the selectivity of the `x` number of chars. Here we can see with 6 chars we are very close the original selectivity , which is the entire name.
 One thing to note that prefix indexes cannot be used to sort. So we cannot do order by or group by. 
