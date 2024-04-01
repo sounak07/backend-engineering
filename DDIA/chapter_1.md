@@ -3,7 +3,8 @@
 - Databases, queues and caches are usually referred as data systems even though they have different purposes and access points since they can used to serve each other's purpose since with modern requirements they no longer neatly fit into traditional categories. 
 - All the tools above can be stitched together with application code to bring out certain outcome.
 
-![[Screenshot 2024-01-21 at 1.30.53 PM.png]]
+![alt text](/resources/Screenshot%202024-01-21%20at%201.30.53 PM.png)
+
 
 *The above example shows how a bunch of tools a message queue , a caching service and a full text search (Elastic) can used together to get a desired outcome.*
 *All of which is hidden behind the API.*
