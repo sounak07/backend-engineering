@@ -4,7 +4,7 @@ LinkedIn was able to hit a cache rate of 99% which reduced their tail latency an
 
 ##### The History
 
-![[Screenshot 2024-04-02 at 9.43.05 PM.png]]
+![alt text](/resources/Screenshot%202024-04-02%20at%209.43.05%20PM.png)
 
 Earlier what linkedIn used to do when a profile is requested , in simple terms the frontend would request the backend for the profile. The backend would make a request to the Espresso, linkedIn's in-house NoSQL db and return.
 
@@ -14,19 +14,19 @@ Espresso also had a OHC(off-heap cache) in the Espresso router. The OHC is quite
 
 ##### The big change
 
-![[Screenshot 2024-04-02 at 9.56.31 PM.png]]
+![alt text](/resources/Screenshot%202024-04-02%20at%209.56.31%20PM.png)
 
 The architecture shows that the Couchbase sides aside from the Espresso storage node. One of the advantages of this architecture is Espresso handles the internal caching part on its own with any intervention from the application developers.
 
 ##### Reads
 
-![[Screenshot 2024-04-02 at 10.07.51 PM.png]]
+![alt text](/resources/Screenshot%202024-04-02%20at%2010.07.51%20PM.png)
 
 First the request checks OHC, on cache miss it goes to the couchbase cache , if data found , it returns it else if its a miss it requests the data from the Espresso storage.
 
 ##### Writes
 
-![[Screenshot 2024-04-02 at 10.16.08 PM.png]]
+![alt text](/resources/Screenshot%202024-04-02%20at%2010.16.08%20PM.png)
 
 Now the cache misses needs to be updated into the couchbase. This is done by Brooklin. Brooklin upserts and streams data to the cache updater to update the cache.
 There are two streams in Brooklin. 
@@ -67,4 +67,7 @@ This is done to keep the cache updated the database. The update are made in an i
 In order to handle concurrent updates , couchbase generates something called Compare-And-Swap (CAS). CAS value is typically stored along with cache.
 Whenever some data is read from cache , CAS also gets sent with the data. Now if an update is requested CAS needs to be sent to Couchbase , if there is another service that updated the cache before this CAS gets changed and does not match. So its an indicator that the data has been updated and can be handled accordingly. 
 
-![[Screenshot 2024-04-02 at 11.39.57 PM.png]]
+![alt text](/resources/Screenshot%202024-04-02%20at%2011.39.57%20PM.png)
+
+
+[Reference](https://newsletter.systemdesigncodex.com/p/how-linkedin-uses-caching-for-profile-reads)
