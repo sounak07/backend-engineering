@@ -1,4 +1,5 @@
- 
+## Chapter 1 - Reliable, Scalable, and Maintainable Applications
+
 #### Thinking Data systems
 - Databases, queues and caches are usually referred as data systems even though they have different purposes and access points since they can used to serve each other's purpose since with modern requirements they no longer neatly fit into traditional categories. 
 - All the tools above can be stitched together with application code to bring out certain outcome.
