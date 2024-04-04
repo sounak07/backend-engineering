@@ -91,13 +91,13 @@ If we see below the structure is quite similar to each other
 
 Cypher Query
 
-![[Screenshot 2024-03-12 at 10.52.44 AM.png]]
+![alt text](/resources/Screenshot%202024-03-12%20at%2010.52.44%20AM.png)
 
 SqarkQL Query 
 
 The SqarkQL is used to query triple store using RDF.
 
-![[Screenshot 2024-03-12 at 10.53.39 AM.png]]
+![alt text](/resources/Screenshot%202024-03-12%20at%2010.53.39%20AM.png)
 
 ### The Foundation : Datalog
 
