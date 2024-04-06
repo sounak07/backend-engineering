@@ -1,5 +1,3 @@
-## Chapter 3 - Storage and Retrival
-
 #### Hash Indexes
 
 Suppose there is a append only file which is used as a database as described in book Page 70. How do we create indexes for those ? 
@@ -71,6 +69,26 @@ To add a new we find the page the key should go to and add it there, if the page
 This algorithm ensures that the tree remains balanced: a B-tree with n keys always has a depth of O(log n). Most databases can be accommodated in a 4 level block mostly if the branching factor is set as per requirement. 
 
 ##### Making B-trees reliable
+
+One problems with B-Trees are complicated write and update operations. Suppose while trying to add a new value if a page is split, the parent also needs to be updated with the ref of the children. This is a complicated operation, incase the database breaks it will end up with corrupted index. 
+To avoid this, B-Tree uses something called WAL (write ahead log), the WAL is a append only binary stream where every modification needs to be added before committing it to the B-Tree. This way is then used to restore data in case of a database crash. 
+One common issue is concurrency. Multiple threads can cause race conditions in the B-Tree causing it to go in an inconsistent state. To avoid this latches (lightweight locks) are used on B-Trees. Its simpler in log-structured case because its append only and overwrites gets removed on compaction.
+
+#### Comparing B-Trees with LSM Trees 
+
+##### Advantages of LSM
+
+One of the issues with B-Tree is that the number writes are higher then LSM which can incur more cost and a probability of space wastage is higher due to unused space is pages. 
+
+##### Downsides of LSM
+
+- Expensive compaction can effect the reads and writes on the LSM. Compaction runs in background but the disk has limited resources.
+- Another issue with compaction could be high throughput effecting the compaction which will cause in the increase of segments and eventually increasing the reads times needing to read through a lot of segments.
+- Another advantage of B-Tree is unique keys which might not be the case in LSM if compaction is not performed properly. 
+
+
+
+
 
 
 
