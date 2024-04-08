@@ -1,3 +1,5 @@
+## Chapter 3 - Storage and Retrieval
+
 #### Hash Indexes
 
 Suppose there is a append only file which is used as a database as described in book Page 70. How do we create indexes for those ? 
@@ -87,6 +89,26 @@ One of the issues with B-Tree is that the number writes are higher then LSM whic
 - Expensive compaction can effect the reads and writes on the LSM. Compaction runs in background but the disk has limited resources.
 - Another issue with compaction could be high throughput effecting the compaction which will cause in the increase of segments and eventually increasing the reads times needing to read through a lot of segments.
 - Another advantage of B-Tree is unique keys which might not be the case in LSM if compaction is not performed properly. 
+
+#### Storing values within the index
+
+Usually there could be two ways of referencing to the row values from an index. It can either by storing the entire row values within the index or by storing a reference to the place where data is stored. It stores data in no particular order .The data is stored in a heap file. The key advantage of heap file is that it can avoid duplicates since if multiple secondary references are present they will point to the same reference where data is stored.  Any deleted key is tracked and deleted.
+
+While updating without changing the key, the heap approach can be quite efficient since the data can be over-written if the value is same or smaller. In case of larger values there might be a need to copy all to a new heapfile or leave reference in the old file to the new file.
+
+But this approach can be a performance overhead due to the need to jump to a reference to fetch data. This can an overhead as writes might be slower. In SQL , primary indexes store the row values and the secondary indexes refers the primary index. 
+
+A compromise between a clustered index (storing all row data within the index) and a non-clustered index (storing only references to the data within the index) is known as a covering index or index with included columns, which stores some of a table’s columns within the index. This way some queries can just be answered from index itself. 
+
+#### Multi-column indexes
+
+There could cases where multiple indexes needs to be used at the same time. In case of LSM or B-Tree based indexes, only one of them can be accounted for. R-Trees can be a solution to this. Can read more about them out of scope for us here.
+
+![alt text](/resources/Screenshot%202024-04-08%20at%206.22.45%20PM.png)
+
+#### Storing everything in-memory 
+
+One of the major advantages here is the required of encoding to store in disk in not there as we have in disk based storages. It also provides data models that are difficult to implement in disk based storages like priority queues and sets. 
 
 
 
