@@ -110,6 +110,34 @@ There could cases where multiple indexes needs to be used at the same time. In c
 
 One of the major advantages here is the required of encoding to store in disk in not there as we have in disk based storages. It also provides data models that are difficult to implement in disk based storages like priority queues and sets. 
 
+#### Transaction Processing or Analytics?
+
+Databases are expanded into many areas over the areas from earlier being used as a way to track monetary transactions. Databases where the updates are based on user actions like update , delete or read are often referred as *online transaction processing* (OLTP), whereas if they are used for Business analytics which is a very common use case in today's systems they are referred as *online analytics processing*. 
+
+![[Screenshot 2024-04-13 at 10.47.50 PM.png]]
+
+In early days , same database was used for both purposes. SQL databases were a great fit and served the purpose well. But as we moved forward companies stoped using the same database for analytics and started to have a separate database for OLAP-type queries. This database is typically called *data warehouse*. 
+
+#### Data Warehouse
+
+OLTP systems are usually expected to be highly available and with low latency. Running huge analytic queries on such systems can effect the efficiency concurrency reads and writes so OLAP type queries in run on a separate database, a *data-warehouse*, its where the analysts run the queries to draw business insights. Its usually a copy of all the data of all the OLTP systems. 
+Data is extracted from OLTP systems , either by periodic data-dump or continuous stream updates, transformed into analytics friendly schemas and loaded into the data-warehouse. This process is called ETL(extract-transform-load). 
+One big advantage of warehousing is access patterns can be optimised for analytics.
+
+![[Screenshot 2024-04-13 at 11.09.39 PM.png]]
+
+#### Stars and Snowflakes
+
+OLTP systems can have a wide variety of data models but OLAP data models are usually follow a formulaic style known as star schema. 
+
+![[Screenshot 2024-04-13 at 11.37.32 PM.png]]
+
+The above is a typical example of star schema. In the middle is the *fact_sales* which stores all the events that are happening within the OLTP systems. Extending this are the dimension tables , where each row in the fact table represents an event, the dimensions represent the who, what, where, when, how, and why of the event. The *fact_table* stores the foreign key to the dimension tables.
+
+Another schema is a *snokflake schema* which is a further normalised schema which extends the dimension tables to sub dimension tables. For example, there could be separate tables for brands and product categories, and each row in the dim_product table could ref‐ erence the brand and category as foreign keys, rather than storing them as strings in the dim_product table. 
+
+Usually star schemas are preferred more as they are simpler to analyze. 
+
 
 
 
