@@ -92,3 +92,33 @@ So from the above picture in line 3, we can see how we choose to index the first
 So as we can see we are checking the selectivity of the `x` number of chars. Here we can see with 6 chars we are very close the original selectivity , which is the entire name.
 One thing to note that prefix indexes cannot be used to sort. So we cannot do order by or group by. 
 
+#### Composite indexes
+
+Composite indexes are single index on multiple columns. Composite indexes can be created by 
+
+```sql
+alter table <table_name> add index multi(col_1, col_2)
+```
+
+There are certain rules of using composite indexes. Lets look at them !
+
+**It cannot skip columns and must follow the order , left to right no skipping.** 
+
+Lets say we have an index on first_name, last_name and birthday. 
+
+![[Screenshot 2024-04-14 at 12.43.21 AM.png]]
+
+In the above if we see , the key_len is 202 bytes. key_len tells how much of the index the query is able to use , here is 404 because its using the entire first name part and last name part. 
+
+![[Screenshot 2024-04-14 at 12.45.59 AM.png]]
+
+
+But in this example its using no index , because we are skipping the order in query. Similarly if we have a query where we have first name birthday , key_len will be 202 because it can only use `first_name` not `birthday` as it cannot skip the order. 
+
+**It stops at the first range condition** 
+
+![[Screenshot 2024-04-14 at 12.51.59 AM.png]]
+
+Here if we see even after not skipping any cols we are still only using a part of the index. Its happening because of the range we have specified for the last name. Its stops because when we have a range we need to scan all the leaf nodes of B-Tree causing us to loose the ability to look further. 
+
+How we should choose to build our composite indexes are highly coupled with the access patterns. Another thing to note is we should put commonly used cols at the start and try putting ranges later because it stops at the range as we saw above. 
