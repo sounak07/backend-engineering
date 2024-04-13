@@ -114,7 +114,8 @@ One of the major advantages here is the required of encoding to store in disk in
 
 Databases are expanded into many areas over the areas from earlier being used as a way to track monetary transactions. Databases where the updates are based on user actions like update , delete or read are often referred as *online transaction processing* (OLTP), whereas if they are used for Business analytics which is a very common use case in today's systems they are referred as *online analytics processing*. 
 
-![[Screenshot 2024-04-13 at 10.47.50 PM.png]]
+![alt text](/resources/Screenshot%202024-04-13%20at%2010.47.50%20PM.png)
+
 
 In early days , same database was used for both purposes. SQL databases were a great fit and served the purpose well. But as we moved forward companies stoped using the same database for analytics and started to have a separate database for OLAP-type queries. This database is typically called *data warehouse*. 
 
@@ -124,13 +125,14 @@ OLTP systems are usually expected to be highly available and with low latency. R
 Data is extracted from OLTP systems , either by periodic data-dump or continuous stream updates, transformed into analytics friendly schemas and loaded into the data-warehouse. This process is called ETL(extract-transform-load). 
 One big advantage of warehousing is access patterns can be optimised for analytics.
 
-![[Screenshot 2024-04-13 at 11.09.39 PM.png]]
+![alt text](/resources/Screenshot%202024-04-13%20at%2011.09.39%20PM.png)
+
 
 #### Stars and Snowflakes
 
 OLTP systems can have a wide variety of data models but OLAP data models are usually follow a formulaic style known as star schema. 
 
-![[Screenshot 2024-04-13 at 11.37.32 PM.png]]
+![alt text](/resources/Screenshot%202024-04-13%20at%2011.37.32%20PM.png)
 
 The above is a typical example of star schema. In the middle is the *fact_sales* which stores all the events that are happening within the OLTP systems. Extending this are the dimension tables , where each row in the fact table represents an event, the dimensions represent the who, what, where, when, how, and why of the event. The *fact_table* stores the foreign key to the dimension tables.
 
