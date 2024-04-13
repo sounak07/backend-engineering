@@ -106,18 +106,19 @@ There are certain rules of using composite indexes. Lets look at them !
 
 Lets say we have an index on first_name, last_name and birthday. 
 
-![[Screenshot 2024-04-14 at 12.43.21 AM.png]]
+![alt text](/resources/Screenshot%202024-04-14%20at%2012.43.21%20AM.png)
+
 
 In the above if we see , the key_len is 202 bytes. key_len tells how much of the index the query is able to use , here is 404 because its using the entire first name part and last name part. 
 
-![[Screenshot 2024-04-14 at 12.45.59 AM.png]]
+![alt text](/resources/Screenshot%202024-04-14%20at%2012.45.59%20AM.png)
 
 
 But in this example its using no index , because we are skipping the order in query. Similarly if we have a query where we have first name birthday , key_len will be 202 because it can only use `first_name` not `birthday` as it cannot skip the order. 
 
 **It stops at the first range condition** 
 
-![[Screenshot 2024-04-14 at 12.51.59 AM.png]]
+![alt text](/resources/Screenshot%202024-04-14%20at%2012.51.59%20AM.png)
 
 Here if we see even after not skipping any cols we are still only using a part of the index. Its happening because of the range we have specified for the last name. Its stops because when we have a range we need to scan all the leaf nodes of B-Tree causing us to loose the ability to look further. 
 
