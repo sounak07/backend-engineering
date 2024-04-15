@@ -136,7 +136,7 @@ OLTP systems can have a wide variety of data models but OLAP data models are usu
 
 The above is a typical example of star schema. In the middle is the *fact_sales* which stores all the events that are happening within the OLTP systems. Extending this are the dimension tables , where each row in the fact table represents an event, the dimensions represent the who, what, where, when, how, and why of the event. The *fact_table* stores the foreign key to the dimension tables.
 
-Another schema is a *snokflake schema* which is a further normalised schema which extends the dimension tables to sub dimension tables. For example, there could be separate tables for brands and product categories, and each row in the dim_product table could ref‐ erence the brand and category as foreign keys, rather than storing them as strings in the dim_product table. 
+Another schema is a *snokflake schema* which is a further normalised schema which extends the dimension tables to sub dimension tables. For example, there could be separate tables for brands and product categories, and each row in the dim_product table could reference the brand and category as foreign keys, rather than storing them as strings in the dim_product table. 
 
 Usually star schemas are preferred more as they are simpler to analyze. 
 
