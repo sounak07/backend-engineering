@@ -140,6 +140,19 @@ Another schema is a *snokflake schema* which is a further normalised schema whic
 
 Usually star schemas are preferred more as they are simpler to analyze. 
 
+#### Column-oriented database
+
+In analytic systems , column oriented databases are much more efficient then row-oriented databases. The reason being the rows of all the columns are stored together in memory so its much more efficient to load only the values we need without having to load all the row just for one value. 
+
+![[Screenshot 2024-04-15 at 10.43.50 PM.png]]
+
+#### Column Compression
+
+Column-oriented databases can be further optimised by introducing compression using bitmap. Often there are a lot of repetitive values in column oriented databases. 
+The distinct values can be taken and bitmap can be created for each distinct value and can be mapped to create bitmaps as below. 
+
+![[Screenshot 2024-04-15 at 10.50.05 PM.png]]
+
 
 
 
