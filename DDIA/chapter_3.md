@@ -155,6 +155,24 @@ The distinct values can be taken and bitmap can be created for each distinct val
 ![alt text](/resources/Screenshot%202024-04-15%20at%2010.50.05%20PM.png)
 
 
+#### Sort order in Column Storage
+
+Column oriented databases are usually sorted based on the requirement. Suppose we need data of last month sales very frequently , so `date_key` could be a great param to use to sort the database. Secondary sort key could `product_key`.  Also sorting makes it easier for us to compress data. 
+There can be different sort keys for different database instances backed in different clusters. They servers the purpose of redundancy and also provides a way to sort them with a different sort key and hence could be used if a different requirement came in.
+
+#### Materialised view & Data cubes 
+
+In relational databases , we have something called views which basically store queries. They are shortcut to writing queries. When the view is queried , the underlying query is used to process. But materialised view is actually a copy of the query results written in disk which gets updated when the underlying data changes.
+
+Data cubes are a way to represent data in 2d space in OLAP systems for quick access for reading queries that are frequently used. Its a way to representing precomputed data for performance boost. 
+
+![alt text](/resources/Screenshot%202024-04-15%20at%2010.50.05%20PM.png)
+
+
+
+[Mind Map](https://trunin.com/en/2021/12/designing-data-intensive-apps-part03/images/data-intensive-apps-part03-storage-and-retrieval_hu86d7427f9b4c142d70ccb6a3b30f285b_1041367_1815x5119_resize_q90_h2_box_3.webp)
+
+
 
 
 
