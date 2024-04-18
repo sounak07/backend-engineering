@@ -162,7 +162,7 @@ There can be different sort keys for different database instances backed in diff
 
 #### Materialised view & Data cubes 
 
-In relational databases , we have something called views which basically store queries. They are shortcut to writing queries. When the view is queried , the underlying query is used to process. But materialised view is actually a copy of the query results written in disk which gets updated when the underlying data changes.
+In relational databases , we have something called views which basically store queries. They are shortcut to writing queries. When the view is queried , the underlying query is used to process. But materialised view is actually a copy of the query results written in disk which gets updated when the underlying data changes. This makes the writes quite expensive which is why not commonly used in OLTP systems
 
 Data cubes are a way to represent data in 2d space in OLAP systems for quick access for reading queries that are frequently used. Its a way to representing precomputed data for performance boost. 
 
