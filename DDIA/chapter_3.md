@@ -166,7 +166,7 @@ In relational databases , we have something called views which basically store q
 
 Data cubes are a way to represent data in 2d space in OLAP systems for quick access for reading queries that are frequently used. Its a way to representing precomputed data for performance boost. 
 
-![alt text](/resources/Screenshot%202024-04-15%20at%2010.50.05%20PM.png)
+![alt text](/resources/Screenshot%202024-04-18%20at%2011.23.33%20PM.png)
 
 
 
