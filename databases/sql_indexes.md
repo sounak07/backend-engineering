@@ -1,3 +1,5 @@
+## Database Indexes
+
 **Why indexes ?**
 Without an index the database needs to look through all the relevant rows to find the target row which is not ideal and will not be performant for large datasets.
 

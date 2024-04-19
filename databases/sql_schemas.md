@@ -1,3 +1,5 @@
+## Database Schemas
+
 Database schemas should be 
 - Small - Choose the smallest data type that can hold your data. 
 - Simple - Choose the correct data type for the data that we are trying to store. Use `int` for integers , `datetime` for dates. *Don't use string for dates*
