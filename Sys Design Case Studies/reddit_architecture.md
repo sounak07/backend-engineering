@@ -1,3 +1,5 @@
+## Reddit's Architecture
+
 It all started with Lisp but was moved to Python in around 2005. Lisp had a lack of well tested libraries. Starting with web.py and later moving to Pylons. 
 
 #### The Core
