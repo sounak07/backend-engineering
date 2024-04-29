@@ -81,7 +81,8 @@ The major challenge was to migrate the existing data to new systems ensuring all
 
 #### Image Optimisations 
 
-![[Screenshot 2024-04-28 at 9.08.47 PM.png]]
+![alt text](/resources/Screenshot%202024-04-28%20at%209.08.47%20PM.png)
+
 
 Reddit needed to serve users across different types of format like mobile, web etc.
 Reddit moved from third party Just-in-image optimisations to in-house. They were mainly two services. One to convert GIF to MP4 since GIF aren't optimize friendly due to larger size and higher computation resource. 
@@ -90,7 +91,8 @@ Reddit moved from third party Just-in-image optimisations to in-house. They were
 
 One of crucial features of reddit was content moderation. Reddit built a system called Rule-executor-v1 (REV-1) to enforce certain rules dictated by the content moderation team. The rules could be a Lua script like below 
 
-![[Screenshot 2024-04-28 at 9.30.21 PM.png]]
+![alt text](/resources/Screenshot%202024-04-28%20at%209.30.21%20PM.png)
+
 
 However this system had some issues to it. This includes - 
 - REV-1 spawned a new process for all the new rules that was enforced which needed to be scaled vertically. 
@@ -99,7 +101,7 @@ However this system had some issues to it. This includes -
 
 A new system was built to address the following issues. In 2021, a new streaming service called snooron was built.
 
-![[Screenshot 2024-04-28 at 9.34.38 PM.png]]
+![alt text](/resources/Screenshot%202024-04-28%20at%209.34.38%20PM.png)
 
 Keys differences in REV-1 and REV-2
 - In REV-1 all the rule addition were web based but for REV-2 it was done at code level with a UI to make the process simpler.  
@@ -119,7 +121,8 @@ Earlier all the posts were a huge Posts object storing everything which wasn't v
 
 Reddit used thrift to communicate between its services. Thrift provides an Interface(or API) to communicate with other services. With growing number of services Thrift became expensive to use. So Reddit's move to grpc was made. Grpc was certain advantages like its native support in HTTP2 , its native support for service mesh tools like istio etc
 
-![[Screenshot 2024-04-28 at 10.24.13 PM.png]]
+![alt text](/resources/Screenshot%202024-04-28%20at%2010.24.13%20PM.png)
+
 
 Reddit used an architecture to mock the Thrift workflow is order to reuse its existing implementation.  
 
