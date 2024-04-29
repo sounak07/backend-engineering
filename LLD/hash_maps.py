@@ -32,6 +32,7 @@ class HashMap(object):
         for i,it in enumerate(hash_key_chain):
             if it.key == key:
                 hash_key_chain[i] = Item(key=key, value=value)
+                return
         hash_key_chain.append(Item(key=key, value=value))
         self.store[hash_key] = hash_key_chain
 
@@ -42,9 +43,9 @@ class HashMap(object):
         for it in hash_key_chain:
             if it.key == key:
                 value = it.value
+                return value
         if not value:
             raise KeyError()
-        return value
         
     def remove_item(self, key: int) -> None:
         hash_key = self._hash(key)
