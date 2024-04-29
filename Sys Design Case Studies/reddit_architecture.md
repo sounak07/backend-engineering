@@ -79,3 +79,49 @@ The major challenge was to migrate the existing data to new systems ensuring all
 
 ![alt text](/resources/Screenshot%202024-04-28%20at%208.52.45%20PM.png)
 
+#### Image Optimisations 
+
+![[Screenshot 2024-04-28 at 9.08.47 PM.png]]
+
+Reddit needed to serve users across different types of format like mobile, web etc.
+Reddit moved from third party Just-in-image optimisations to in-house. They were mainly two services. One to convert GIF to MP4 since GIF aren't optimize friendly due to larger size and higher computation resource. 
+
+#### Real-time Protection for Users at Scale
+
+One of crucial features of reddit was content moderation. Reddit built a system called Rule-executor-v1 (REV-1) to enforce certain rules dictated by the content moderation team. The rules could be a Lua script like below 
+
+![[Screenshot 2024-04-28 at 9.30.21 PM.png]]
+
+However this system had some issues to it. This includes - 
+- REV-1 spawned a new process for all the new rules that was enforced which needed to be scaled vertically. 
+- Lack of staging env for sandbox testing
+- Rules are version controlled so no way to track the changes.
+
+A new system was built to address the following issues. In 2021, a new streaming service called snooron was built.
+
+![[Screenshot 2024-04-28 at 9.34.38 PM.png]]
+
+Keys differences in REV-1 and REV-2
+- In REV-1 all the rule addition were web based but for REV-2 it was done at code level with a UI to make the process simpler.  
+-  In REV-1 , Rules are stored in Zookeeper but in REV-2 a github repo was used which enabled the version control for auditing. 
+- In REV-1 each rule enforcing spawned a new process caused scaling issues. But in REV-2 it uses Flink stateful functions for handling the stream of events (rules that were enforces) and a separate Baseplate application that executes the Lua code.
+- In REV-1 actions triggered by rules are handled by r2 but in case of REV-2 , it sends out structured protobuf actions to action topics to carry out these actions using a new service built using Flink Statefun called Safety actioning worker. 
+
+#### Reddit's Feed
+
+Reddit's feed was a crucial part. Also it needed to be - 
+- The dev needed to be faster and should scale well since a lot of teams engage with feeds to support their services.
+- Time to interact needed to be faster to enhance user experience. 
+- Feeds should be consistent.
+
+Earlier all the posts were a huge Posts object storing everything which wasn't very performant. Later Reddit moved to Server Driver UI which where only the title and description was sent on load.
+#### From Thrift to GRPC
+
+Reddit used thrift to communicate between its services. Thrift provides an Interface(or API) to communicate with other services. With growing number of services Thrift became expensive to use. So Reddit's move to grpc was made. Grpc was certain advantages like its native support in HTTP2 , its native support for service mesh tools like istio etc
+
+![[Screenshot 2024-04-28 at 10.24.13 PM.png]]
+
+Reddit used an architecture to mock the Thrift workflow is order to reuse its existing implementation.  
+
+[Reference](https://blog.bytebytego.com/p/reddits-architecture-the-evolutionary)
+
