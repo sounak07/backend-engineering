@@ -125,3 +125,54 @@ But in this example its using no index , because we are skipping the order in qu
 Here if we see even after not skipping any cols we are still only using a part of the index. Its happening because of the range we have specified for the last name. Its stops because when we have a range we need to scan all the leaf nodes of B-Tree causing us to loose the ability to look further. 
 
 How we should choose to build our composite indexes are highly coupled with the access patterns. Another thing to note is we should put commonly used cols at the start and try putting ranges later because it stops at the range as we saw above. 
+
+
+**Covering Index**
+In the Column `Extra`, it says `using index` since we are only fetching cols that are indexed. So a covering index case
+
+![[Screenshot 2024-05-03 at 12.09.31 AM.png]]
+
+In the Column `Extra`, it says `null` since we are only fetching cols that are indexed. So not a covering index.
+
+![[Screenshot 2024-05-03 at 12.10.42 AM.png]]
+
+But if we add id here , which is a primary index, its still a covering index since its also not referring to a different data structure to fetch details.
+
+#### Functional Indexes
+
+Putting functions on a columns nullifies the indexes as we can see in the below example. This can happen while orms are driving the query generations. 
+
+
+![[Screenshot 2024-05-04 at 9.50.29 PM.png]]
+
+So to solve this we can use a function based index. 
+
+```sql
+alter table add index m(year(created_at))
+```
+
+Here we created an index m on this following expression. So running this above query will use the index. 
+
+#### Indexing JSON Columns
+
+![[Screenshot 2024-05-04 at 10.59.10 PM.png]]
+
+So in-order to index a json field we need generated columns. As we can see above, the email column is used as an index. In the where clause we can also use the generated column name we specified.
+
+The other way could to use functional indexes. But if we see below creating functional indexes using casting does not work because of different collation. 
+
+![[Screenshot 2024-05-04 at 11.13.30 PM.png]]
+
+So we need to explicitly collate to `utf8m4_bin` as  `COLLATE utf8m4_bin`  added to query. Underlying MYSQL actually generates a generated column underneath it so both are equally performant. 
+
+#### Indexing for wild card searches 
+
+![[Screenshot 2024-05-04 at 11.21.24 PM.png]]
+
+So we can see for a wild card searches like this where we can searching beginning , indexes does get used. The general rule is that the indexes can get used up until it reaches wildcard, basically we can use an index to find specific data up to a certain point. In here its `like` upto `aaron`. 
+
+But for cases like below where we are looking anywhere `like %aaron%` or for the end part `like %aaron`, we cannot use index. 
+
+![[Screenshot 2024-05-04 at 11.30.50 PM.png]]
+
+We can use generated columns to store reverse of the string or just the domain part depending on use cases. 
