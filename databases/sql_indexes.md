@@ -128,13 +128,16 @@ How we should choose to build our composite indexes are highly coupled with the 
 
 
 **Covering Index**
+
 In the Column `Extra`, it says `using index` since we are only fetching cols that are indexed. So a covering index case
 
-![[Screenshot 2024-05-03 at 12.09.31 AM.png]]
+![alt text](/resources/Screenshot%202024-05-03%20at%2012.09.31%20AM.png)
+
 
 In the Column `Extra`, it says `null` since we are only fetching cols that are indexed. So not a covering index.
 
-![[Screenshot 2024-05-03 at 12.10.42 AM.png]]
+![alt text](/resources/Screenshot%202024-05-03%20at%2012.10.42%20AM.png)
+
 
 But if we add id here , which is a primary index, its still a covering index since its also not referring to a different data structure to fetch details.
 
@@ -143,7 +146,8 @@ But if we add id here , which is a primary index, its still a covering index sin
 Putting functions on a columns nullifies the indexes as we can see in the below example. This can happen while orms are driving the query generations. 
 
 
-![[Screenshot 2024-05-04 at 9.50.29 PM.png]]
+![alt text](/resources/Screenshot%202024-05-04%20at%209.50.29%20PM.png)
+
 
 So to solve this we can use a function based index. 
 
@@ -155,24 +159,28 @@ Here we created an index m on this following expression. So running this above q
 
 #### Indexing JSON Columns
 
-![[Screenshot 2024-05-04 at 10.59.10 PM.png]]
+![alt text](/resources/Screenshot%202024-05-04%20at%2010.59.10%20PM.png)
+
 
 So in-order to index a json field we need generated columns. As we can see above, the email column is used as an index. In the where clause we can also use the generated column name we specified.
 
 The other way could to use functional indexes. But if we see below creating functional indexes using casting does not work because of different collation. 
 
-![[Screenshot 2024-05-04 at 11.13.30 PM.png]]
+![alt text](/resources/Screenshot%202024-05-04%20at%2011.13.30%20PM.png)
+
 
 So we need to explicitly collate to `utf8m4_bin` as  `COLLATE utf8m4_bin`  added to query. Underlying MYSQL actually generates a generated column underneath it so both are equally performant. 
 
 #### Indexing for wild card searches 
 
-![[Screenshot 2024-05-04 at 11.21.24 PM.png]]
+![alt text](/resources/Screenshot%202024-05-04%20at%2011.21.24%20PM.png)
+
 
 So we can see for a wild card searches like this where we can searching beginning , indexes does get used. The general rule is that the indexes can get used up until it reaches wildcard, basically we can use an index to find specific data up to a certain point. In here its `like` upto `aaron`. 
 
 But for cases like below where we are looking anywhere `like %aaron%` or for the end part `like %aaron`, we cannot use index. 
 
-![[Screenshot 2024-05-04 at 11.30.50 PM.png]]
+![alt text](/resources/Screenshot%202024-05-04%20at%2011.30.50%20PM.png)
+
 
 We can use generated columns to store reverse of the string or just the domain part depending on use cases. 
