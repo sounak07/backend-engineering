@@ -82,8 +82,9 @@ Also long running transactions can get aborted due to deadlocks needs to be rest
 
 **Serializable Snapshot Isolation**
 
-This type of isolation tries to evaluate the need for locks if any. If there is going to be isolated transactions the need to locks might not be there. If there is we might choose to abort and re run those transactions or use different approach in those cases like 2PL.  This can be called a _optimistic concurrency control_.
+This type of isolation tries to evaluate the need for locks if any. If there is going to be isolated transactions where need to locks might not be there. If there is, we might choose to abort and re run those transactions or use different approach in those cases like 2PL.  This can be called a _optimistic concurrency control_.
 
+In a case where concurrent transactions are updating the same values or are conflicting with each using 2PL  is better but if the transactions are isolated which the case most of the time SSI can be used since its much faster then 2PL.
 [Refer to video for examples](https://www.youtube.com/watch?v=4TAKYRzm_dA&list=PLjTveVh7FakLdTmm42TMxbN8PvVn5g4KJ&index=14)
 
 
