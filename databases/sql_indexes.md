@@ -184,3 +184,64 @@ But for cases like below where we are looking anywhere `like %aaron%` or for the
 
 
 We can use generated columns to store reverse of the string or just the domain part depending on use cases. 
+
+
+#### Fulltext Indexes
+
+While simple string searches can help find basic results, what happens when you're searching across multiple columns or trying to find specific words within a block of text? That's where full-text indexing and full-text searching come in handy in databases like MySQL.
+
+To add a full-text index to a table in MySQL, you can use an ALTER TABLE statement. In this example, we'll be adding a full-text index across the `first_name`, `last_name`, and `bio` columns in our `people` table.
+
+```sql
+ALTER TABLE people ADD FULLTEXT INDEX `fulltext`(first_name, last_name, bio);
+```
+
+![alt text](/resources/Screenshot%202024-05-26%20at%205.47.50%20PM.png)
+
+```sql
+SELECT * FROM people WHERE MATCH(first_name, last_name, bio) AGAINST('Aaron');
+```
+
+This query will search across all three indexed columns and display all rows where "Aaron" appeared.
+
+For more advanced full-text searches, you can switch to boolean mode. Boolean mode allows you to use modifiers, like `+`, `-`, `>`, `<`, and parentheses in your search query.
+
+Here's an example of a boolean search query:
+
+```sql
+SELECT * FROM people
+  WHERE MATCH(first_name, last_name, bio) AGAINST('+Aaron -Francis' IN BOOLEAN MODE);
+```
+This query will search for all rows where "Aaron" appears and exclude any rows where "Francis" appears. The `+` indicates that "Aaron" is a required search term, and the `-` indicates that "Francis" is excluded.
+
+In boolean mode, you can also add quotation marks to search for an exact phrase or use the `NEAR` operator to search for words within a certain distance of each other.
+
+#### Foreign Keys
+
+Foreign keys are used to refer to the table the table with the foreign key is connected with. There is another thing called Foreign key constraint which basically maintain the referential integrity between tables. It helps maintain that all data references are valid and consistent. 
+
+```sql
+CREATE TABLE parent (
+  ID BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+);
+```
+This creates a table `parent` with a single column `id` as a primary key. Now let's create the `child` table with a foreign key constraint that references the `parent` table:
+
+```sql
+CREATE TABLE child (
+  ID BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  parent_id BIGINT UNSIGNED,
+
+  FOREIGN KEY (parent_id) REFERENCES parent(ID)
+);
+```
+
+The type of foreign key column should be exactly same as the parent column. 
+
+![alt text](/resources/Screenshot%202024-05-26%20at%206.04.03%20PM.png)
+
+We can see an index was created on `parent_id` with some constraints. When something is inserted into child table it checks for the foreign key in parent table to see if that exists , if not it throws an error. 
+
+Also trying to delete from parent without deleting the child , it throws an error. It order to delete the  children as well we need to add some options to the table called `on delete cascade`. 
+
+But doing this cause issues , since it might end up trying to  delete a lot of child and at scale it could be a huge number. So we need to be careful on how we implement the delete part. 
