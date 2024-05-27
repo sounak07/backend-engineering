@@ -50,12 +50,14 @@ Lucene , a full text based indexing engine also uses this technique to create an
 ##### Performance Optimizations 
 
 A LSM-tree algorithm can be slow if the key is not present in the tree. Since In this case it has to look through the entire tree in memory and all the disk segment. So bloom filters are often used to optimise the search. Bloom filters are memory efficient data structures that approximate the presence of a key in a set.
-There are certain compaction strategies are used to optimise the compaction. Some are *size-tiered* and *leveled* compaction. Different databases use different strategies. 
+There are certain compaction strategies are used to optimise the compaction. Some are *size-tiered* and *levelled* compaction. Different databases use different strategies. 
 In size-tiered compaction, newer and smaller SSTables are successively merged into older and larger SSTables.
-In leveled compaction, the key range is split up into smaller SSTables and older data is moved into separate “levels,” which allows the compaction to proceed more incrementally and use less disk space.
-In traditional compaction strategies like "size-tiered compaction," the compaction process involves merging multiple SSTables into larger ones to reduce fragmentation and improve read performance. However, this process can be resource-intensive and lead to temporary spikes in disk usage and performance degradation during compaction. In contrast, leveled compaction breaks down the compaction process into smaller, incremental steps. Each level only contains a certain range of data, so compaction can be applied more selectively and incrementally to smaller subsets of data. This helps to mitigate the impact on disk usage and performance by spreading out the compaction workload over time.
+In levelled compaction, the key range is split up into smaller SSTables and older data is moved into separate “levels,” which allows the compaction to proceed more incrementally and use less disk space.
+In traditional compaction strategies like "size-tiered compaction," the compaction process involves merging multiple SSTables into larger ones to reduce fragmentation and improve read performance. However, this process can be resource-intensive and lead to temporary spikes in disk usage and performance degradation during compaction. In contrast, levelled compaction breaks down the compaction process into smaller, incremental steps. Each level only contains a certain range of data, so compaction can be applied more selectively and incrementally to smaller subsets of data. This helps to mitigate the impact on disk usage and performance by spreading out the compaction workload over time.
 
-Even though there are many subtleties, the basic idea of LSM-trees—keeping a cas‐ cade of SSTables that are merged in the background—is simple and effective. Even when the dataset is much bigger than the available memory it continues to work well.
+Basically how it works is whenever certain number of level 0 files of size 100MB is there, we merge them as per compaction. Then we wait for the merge file to grow as per level 1 size which is may be 1 GB. So when merged file grows to 1 GB and we have say 10 files of 1 GB we trigger level 1 compaction.
+
+Even though there are many subtleties, the basic idea of LSM-trees—keeping a cascade of SSTables that are merged in the background—is simple and effective. Even when the dataset is much bigger than the available memory it continues to work well. Since data is stored in sorted order, you can efficiently perform range queries.
 
 ##### B-Tree
 
@@ -71,6 +73,8 @@ To update a key in the B-Tree we follow similar algo of finding the key and upda
 
 To add a new we find the page the key should go to and add it there, if the page doesn't have the required space to accommodate another key ,it is split into two half-full pages, and the parent page is updated to account for the new subdivision of key ranges.
 This algorithm ensures that the tree remains balanced: a B-tree with n keys always has a depth of O(log n). Most databases can be accommodated in a 4 level block mostly if the branching factor is set as per requirement. 
+
+[Animation](https://www.youtube.com/watch?v=K1a2Bk8NrYQ&t=22s)
 
 ##### Making B-trees reliable
 
