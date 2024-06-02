@@ -250,7 +250,7 @@ One of the ways to do `select *` and also avoid pulling out large columns is by 
 
 #### Limiting rows
 
-![[Screenshot 2024-06-02 at 9.52.27 PM.png]]
+![alt text](/resources/Screenshot%202024-06-02%20at%209.52.27%20PM.png)
 
 `count(*)` uses the smallest secondary index to count the number of rows since the primary index scanning will be slower because of the presence of all the data there which make the reading from the disk slower the leaf nodes will also be far from each other because of more data in them.
 
