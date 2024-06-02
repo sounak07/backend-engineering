@@ -197,3 +197,77 @@ This gives a more detailed analysis in a tree format with params like
 - Loops (`loops=1`):
     - This indicates how many times this(the data retrieve part) part of the plan was executed. In this case, it was executed once.
 
+#### Index obfuscation
+
+It refers to a case when we miss out on using index on a query due to some modifications done on the value while comparing. 
+
+For example, instead of this:
+
+```sql
+SELECT * FROM film WHERE length / 60 < 2;
+```
+
+We should write it like this:
+
+```sql
+SELECT * FROM film WHERE length < 2 * 60;
+```
+
+Here we are avoiding changing values of length to be able to use index.
+
+#### Redundant and approximate conditions
+
+Cases where redundant conditions can actually be used to avoid index obfuscation. 
+Suppose we have todos table and a row `due_date` and `due_time` but only the `due_date` is indexed. 
+
+```sql
+SELECT * FROM todos
+  WHERE
+  ADDTIME(due_date, due_time) BETWEEN NOW() AND NOW() + INTERVAL 1 DAY
+  AND
+  due_date BETWEEN CURRENT_DATE AND CURRENT_DATE + INTERVAL 1 DAY
+```
+
+The above example demonstrates how we can use a redundant condition to avoid index obfuscation.
+
+#### Select only what you need
+
+Selecting only what we need is important because there is no point fetching data that we are not gonna use, specially for large data columns like `TEXT`, `JSON` etc since they are actually physically stored in a different place then all the other data.
+
+But limiting selects could be an issue for a case where unintentionally we are trying to select a column  that was never pulled out of database. 
+
+```python
+
+person = query("Select name, position from people")
+
+if person.is_admin is None:
+	## do something
+```
+
+The `is_admin` will always be null because it was never pulled out of database. So it could led to several unexpected issues.
+
+One of the ways to do `select *` and also avoid pulling out large columns is by declaring the column as `invisible`. In this way, we would never fetch unless its explicitly specified as `select *, col_name from table_name`
+
+#### Limiting rows
+
+![[Screenshot 2024-06-02 at 9.52.27 PM.png]]
+
+`count(*)` uses the smallest secondary index to count the number of rows since the primary index scanning will be slower because of the presence of all the data there which make the reading from the disk slower the leaf nodes will also be far from each other because of more data in them.
+
+```sql
+select count(id) from people 
+```
+
+Even this will also do the same. One thing to note we only need to specify the column name if we are trying to count the none null values of that specified column. 
+Same principle applies to `avg`, `sum`, `DISTINCT` etc.
+
+```sql
+select * from people LIMIT 10 offset 20
+```
+
+Its a way to limit the number of records that are being returned.  The above query will return 10 after offsetting the first 20 columns. 
+
+```sql
+select * from people LIMIT 10 offset 20 orderby id
+```
+Note that Ordering the limits is a good way to order the results in your way otherwise mysql decides on how to order.
