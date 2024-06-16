@@ -52,3 +52,41 @@ Similarly for Protocol buffers there is only one encoding method but its quite e
 Now how do we add or remove fields or say any schema changes. The encoding if we see in the examples no where refers the name , its always the tag numbers that is being referred to. So updating field to a new name should not be an issue. We just need to make sure that the field tag is set correctly.
 
 Similarly, to add a new field we need to add a new field tag in order it to work. So the code 
+
+##### Avro
+
+Avro is another binary encoding format developed for Hadoop. The schema for Avro is a bit different than others. 
+
+```cpp
+record Person {  
+	string userName;  
+	union { null, long } favoriteNumber = null; 
+	array<string> interests;
+}
+```
+
+In the above schema if we notice, there is no tag number. While retrieving, we go through each field and identify its datatype to construct the data. So how do we support Schema evolution ?
+
+###### The writer's schema and reader's schema
+
+In Avro there is a reader's schema and writer's schema, both could be same or could be different as evolved. The only requirement is they are compatible. 
+When data is decoded (read), the Avro library resolves the differences by looking at the writer’s schema and the reader’s schema side by side and translating the data from the writer’s schema into the reader’s schema
+
+The forward and backward compatibility is supported using default values. When a new schema reads data written by old schema and if any field is missing , its filled with default value.
+Since there is not optional or required here, the default value of null is supported by union like `union {null, long} a`
+
+Changing field data type is supported provided avro can convert the data. Field name change is tricky to do because there is no tag number to identify. So aliases can be used. 
+
+How does the Avro know about the writer's schema to resolve the reader ?
+
+It can done in various ways depending on the use cases.  For bulk data reads, the writer's schema can be specified at the beginning of read start. For cases of network transfer, it can be done by establishing certain writer's schema on handshake or something similar. 
+
+One of the major advantages of avro is its ability to dynamically generate schemas, which is useful in various cases.   
+
+
+##### The merits of Schema
+
+Some of the power features of binary encoding over textual based encodings are:
+- They are much more compact. 
+- Having the need to have Schemas enforce better documentation.
+- Code generation based on schema is really helpful for statically typed languages.
