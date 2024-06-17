@@ -271,3 +271,95 @@ Its a way to limit the number of records that are being returned.  The above que
 select * from people LIMIT 10 offset 20 orderby id
 ```
 Note that Ordering the limits is a good way to order the results in your way otherwise mysql decides on how to order.
+
+#### Joins Overview
+
+Indexes in joins are very important to optimise the overall query otherwise we might end up scanning 1000s of rows just to join a few tables.
+
+With Index
+```bash
+-> Nested loop left join  (cost=29.42 rows=55)
+    -> Nested loop left join  (cost=10.25 rows=55)
+        -> Filter: (film.id <= 10)  (cost=2.82 rows=10)
+            -> Index range scan on film using PRIMARY  (cost=2.82 rows=10)
+        -> Covering index lookup on film_actor using idx_fk_film_id (film_id=film.id)  (cost=1.06 rows=5)
+    -> Single-row index lookup on actor using PRIMARY (id=film_actor.actor_id)  (cost=0.84 rows=1)
+```
+
+Without Index
+```bash
+-> Nested loop left join  (cost=12347.65 rows=54620)
+    -> Left hash join (film_actor.film_id = film.id)  (cost=5519.98 rows=54620)
+        -> Filter: (film.id <= 10)  (cost=3.02 rows=10)
+            -> Index range scan on film using PRIMARY  (cost=3.02 rows=10)
+        -> Hash
+            -> Index scan on film_actor using PRIMARY  (cost=54.93 rows=5462)
+    -> Single-row index lookup on actor using PRIMARY (id=film_actor.actor_id)  (cost=0.08 rows=1)
+```
+
+If we see the cost has increased multiple folds and the number of rows scanned have increased significantly. 
+
+#### Subquery 
+
+In MySQL, subqueries allow you to run a separate query inside your main query, and they can be super powerful in situations where joins might not work exactly as you want them to.
+
+The subquery is not something where we run the queries separately and then put the data in the main query, we want the subquery to run and compute the logic on the go with the same overall query. 
+
+```sql
+SELECT * FROM customer
+WHERE
+  id IN (
+    SELECT customer_id FROM payment WHERE amount > 5.99
+  );
+```
+
+#### Common table expressions (CTEs)
+
+At their core, a Common Table Expression is a SQL statement that can be referenced within the context of a larger query. CTEs are supported in MySQL 8. CTEs allow queries to be broken down into smaller parts that can be more easily comprehended by us mere humans. By doing so, it becomes simpler to reason about and compose complex queries.
+
+The `WITH` keyword is followed by the name of the CTE and the query that generates it in parentheses. After defining the CTE, we can reference it in another query. Here's an example that uses CTEs to find customers who have spent more than the average on purchases at a particular store:
+
+```sql
+with spend_last_6 as (
+  select
+    customer_id,
+    sum(amount) as total_spend
+  from
+    payment
+    inner join customer on customer.id = payment.customer_id
+  where
+    store_id = 1
+    and payment_date > CURRENT_DATE - INTERVAL 6 MONTH
+  group by
+    cusomter_id
+)
+
+select * from spend_last_6 where total_spend > (
+	select avg(total_spend) from spend_last_6
+)
+```
+
+As we can see we are referring the CTE multiple times to derive more data or a different kind of data from that. 
+They very useful OLAP systems.
+
+#### Recursive CTE
+
+Let's look at an example of how to use a Recursive CTE to build a simple list of numbers in SQL. We'll create a table called "numbers" and define our Recursive CTE to generate a sequence of numbers from 1 to 10.
+
+```sql
+WITH RECURSIVE numbers AS (
+  SELECT 1 AS n -- Initial Condition
+  UNION ALL
+  SELECT n + 1 FROM numbers WHERE n < 10 -- Recursive Condition
+)
+
+SELECT * FROM numbers;
+```
+
+Here's what's happening in this code:
+
+- We define a CTE called `numbers` using the WITH keyword and specify the `RECURSIVE` modifier.
+- We define our initial condition, which selects the number 1 and assigns it the alias `n`.
+- We define our recursive condition, which selects the value of n + 1 from the table `numbers`. This incrementally generates the sequence of numbers from 1 to 10.
+
+If we run this code, we get a list of numbers from 1 to 10.
