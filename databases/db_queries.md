@@ -346,6 +346,8 @@ They very useful OLAP systems.
 
 Let's look at an example of how to use a Recursive CTE to build a simple list of numbers in SQL. We'll create a table called "numbers" and define our Recursive CTE to generate a sequence of numbers from 1 to 10.
 
+Basically a way to create and append to table and use the same table again while certain conditions are met.
+
 ```sql
 WITH RECURSIVE numbers AS (
   SELECT 1 AS n -- Initial Condition
