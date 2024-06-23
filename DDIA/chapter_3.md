@@ -158,6 +158,10 @@ The distinct values can be taken and bitmap can be created for each distinct val
 
 ![alt text](/resources/Screenshot%202024-04-15%20at%2010.50.05%20PM.png)
 
+Data compression ensures more caching of data and faster network transmission due to smaller size.
+
+**Dictionary Compression**
+
 
 #### Sort order in Column Storage
 
