@@ -162,6 +162,12 @@ Data compression ensures more caching of data and faster network transmission du
 
 **Dictionary Compression**
 
+In this type of compression what we do is create a dictionary of unique values and store them. Suppose we have a bunch of available school in an area, so in a table to store student details for an area, a lot of repetition of school names can happen, so this can be useful there. 
+
+#### Data Storage Optimizations in Column Oriented Database
+
+In case of column oriented databases, we need to store data in different rows so it needs to be written in a bunch of places(since all the columns are stored together and rows are separate). In order to optimize this, we can implement something like LSM based indexing strategy where we write all the rows to LSM tree and then when it gets too big we bulk write to separate places where the rows are actually stored. 
+
 
 #### Sort order in Column Storage
 
