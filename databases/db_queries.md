@@ -438,7 +438,8 @@ To ensure its efficient we need to use indexing on the ordered column , the anal
 
 We can see in case there is no index , it scans the entire table which is very costly.
 
-![[Screenshot 2024-06-30 at 11.07.30 AM.png]]
+![alt text](/resources/Screenshot%202024-06-30%20at%2011.07.30%20AM.png)
+
 
 ```sql
 SELECT
@@ -563,17 +564,18 @@ Similarly, if we use the equals operator to compare a column with a null value, 
 
 To account for null values, we can use the null-safe equal operator `<=>`, also known as the “spaceship operator.” This operator considers null and another null value as equal.
 
-![[Screenshot 2024-06-30 at 12.28.03 PM.png]]
+![alt text](/resources/Screenshot%202024-06-30%20at%2012.28.03%20PM.png)
+
 
 Here we can see that we are getting both rows because now null is considered equality , basically now even if language_id is null , it will be considered as we used `<=>`.  But `=` rejects those causes because `null = null` returns a null and its not considered. 
 
 To compare a column with a null value, we can use the `is null` or `is not null` operators. These operators will return true or false, depending on whether the value is null or not null.
 
-![[Screenshot 2024-06-30 at 12.20.58 PM.png]]
+![alt text](/resources/Screenshot%202024-06-30%20at%2012.20.58%20PM.png)
 
 Coalesce is a function thats selects the first null value. The coalesce of null, 8, null , 1 is 8. 
 
-![[Screenshot 2024-06-30 at 12.23.41 PM.png]]
+![alt text](/resources/Screenshot%202024-06-30%20at%2012.23.41%20PM.png)
 
 
 
