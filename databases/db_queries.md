@@ -365,3 +365,216 @@ Here's what's happening in this code:
 - We define our recursive condition, which selects the value of n + 1 from the table `numbers`. This incrementally generates the sequence of numbers from 1 to 10.
 
 If we run this code, we get a list of numbers from 1 to 10.
+
+
+#### Union
+
+A UNION query is used to combine the results of two or more SELECT statements into a single result set. Specifically, it takes the values from one table or query, and instead of putting them side-by-side with another table or another query, it puts them together over-under.
+
+```sql
+SELECT
+  first_name,
+  last_name,
+  email_address
+FROM customers
+
+UNION ALL
+
+SELECT
+  first_name,
+  last_name,
+  email_address
+FROM staff;
+```
+
+Notice that we use `UNION ALL` instead of `UNION` to prevent MySQL from eliminating duplicate rows, which can be computationally expensive when we have a large result set. Instead, we simply combine the result sets, knowing that duplicates may exist.
+
+#### Sorting and Limiting
+
+Sorting your rows is not free. It can take a significant amount of resources and time to sort large data sets, and thus, it's important to do it with caution. If you don't need your rows in a certain order, don't order them.
+
+However, if you need to order your rows, it's essential to do it efficiently and effectively. In order to optimize your queries, we must understand how to use indexes to make sorting cheaper.
+
+`ORDER BY` basically sorts the data in order, default sort is ascending unless otherwise specified. 
+
+Order of the returned rows can be different in different types if the column thats being sorted is not deterministic enough so MySQL gets to decide the order. 
+
+To avoid this we can add something thats always unique like the id (Primary key).
+
+```sql
+SELECT id, birthday FROM people ORDER BY birthday, id;
+```
+
+Suppose we want to skip the first 10 rows and get the next may be 100 rows by limiting.
+
+```sql
+SELECT id, birthday FROM people ORDER BY birthday, id LIMIT 100 OFFSET 20;
+```
+
+But this comes with a cost, while ordering MySQL needs to order(sort) all of them(120 rows) and then throw away the first 20 rows and return the next 100 which is inefficient. 
+
+#### Sorting with Indexes
+
+We will begin by ordering the results of the people table by birthday and using a limit of 10.
+
+```sql
+SELECT
+  *
+FROM
+  people
+ORDER BY
+  birthday ASC
+LIMIT
+  10;
+```
+
+When we run this query and examine it using the EXPLAIN statement, we see that it employs the "using file sort" method. This means that MySQL produced a sorted result by sorting all the results, not by reading an index in order.
+
+| id  | select_type | table  | type | possible_keys | key | key_len | ref | rows   | filtered | Extra          |
+| --- | ----------- | ------ | ---- | ------------- | --- | ------- | --- | ------ | -------- | -------------- |
+| 1   | SIMPLE      | people | ALL  |               |     |         |     | 491583 | 100.00   | Using filesort |
+
+To ensure its efficient we need to use indexing on the ordered column , the analyze results below is making this clear. 
+
+We can see in case there is no index , it scans the entire table which is very costly.
+
+![[Screenshot 2024-06-30 at 11.07.30 AM.png]]
+
+```sql
+SELECT
+  *
+FROM
+  people
+ORDER BY
+  birthday ASC, ID ASC
+LIMIT
+  10;
+```
+
+In this case, MySQL can still use the birthday index, even though there is another column involved in the sorting process. 
+Its because secondary indexes has a reference to the primary key so it knows what the primary key and is able to append that easily. 
+
+#### Backward index scans
+
+In MySQL 8.0 or later, we can perform backward index scans when sorting in descending order.
+
+For example, if we set the birthday index to order in descending order and rerun the query, we can see that MySQL performs a backward index scan(Check extras in explain table). This is a new optimization that MySQL uses when it is able to read an index in reverse order.
+
+```sql
+SELECT
+  *
+FROM
+  people
+ORDER BY
+  birthday DESC
+LIMIT
+  10;
+```
+
+But if DESC is something we always want we should create a backend index as there is a 15% penalty here.
+
+```sql
+ALTER table <table_name> add INDEX (birthday desc)
+```
+
+#### Sorting with Composite index
+
+Suppose we have a composite index 
+
+```sql
+ALTER TABLE people ADD INDEX composite_idx(first_name, last_name, birthday);
+```
+
+Now if we want to use this index to order rows, we have make sure we follow the rules of using composite index.
+
+```sql
+SELECT
+ *
+FROM
+  people
+ORDER BY
+  first_name
+LIMIT 10;
+```
+
+We should see that the query executes without any file sorting. This is because the multi-column index allows the database to efficiently sort and retrieve the requested data.
+
+Let's say we want to sort by `last_name` but skip over `first_name`. According to our rules, this is not allowed. However, we can unlock the `last_name` key part for sorting by adding an equality condition on the `first_name` column. Here's the query:
+
+```sql
+SELECT
+  *
+FROM
+  people
+WHERE
+  first_name = 'John'
+ORDER BY
+  last_name;
+```
+
+Here if we remove the first_name equality we will end up not using the index. 
+```sql
+SELECT
+  *
+FROM
+  people
+WHERE
+  first_name = 'John'
+ORDER BY
+  birthday;
+```
+
+Similarly in the above query, we will end up not using the index but that again changes if we add the last_name as equality or in the order by.
+
+**Sorting Direction**
+
+```sql
+SELECT
+  *
+FROM
+  people
+ORDER BY
+  first_name asc;
+```
+
+Here we will use the index, but if we do 
+
+```sql
+SELECT
+  *
+FROM
+  people
+ORDER BY
+  first_name asc , last_name desc;
+```
+ 
+ It will use the file sort. Index can only be used in order, basically while ordering we need to ensure what order we created our index in, is the order of the sort, if we need a different order we ensure we have a index in that order.
+So in order to efficient use the above query , we can create an index as
+
+```sql
+ALTER TABLE people ADD INDEX composite_idx(first_name asc, last_name desc, birthday)
+```
+
+#### Dealing NULLs
+
+When dealing with null values in SQL, one of the first things to consider is how to compare null values. In MySQL, null is not equal to anything, including itself. For example, if we run the query `select null = null` we’ll get `null` back as the result.
+
+Similarly, if we use the equals operator to compare a column with a null value, we’ll also get null back as the result. For example, if we run the query `select null = one` we’ll get `null` back as the result.
+
+To account for null values, we can use the null-safe equal operator `<=>`, also known as the “spaceship operator.” This operator considers null and another null value as equal.
+
+![[Screenshot 2024-06-30 at 12.28.03 PM.png]]
+
+Here we can see that we are getting both rows because now null is considered equality , basically now even if language_id is null , it will be considered as we used `<=>`.  But `=` rejects those causes because `null = null` returns a null and its not considered. 
+
+To compare a column with a null value, we can use the `is null` or `is not null` operators. These operators will return true or false, depending on whether the value is null or not null.
+
+![[Screenshot 2024-06-30 at 12.20.58 PM.png]]
+
+Coalesce is a function thats selects the first null value. The coalesce of null, 8, null , 1 is 8. 
+
+![[Screenshot 2024-06-30 at 12.23.41 PM.png]]
+
+
+
+[Reference](https://planetscale.com/learn/courses/mysql-for-developers/queries)
