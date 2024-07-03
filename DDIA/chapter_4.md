@@ -93,3 +93,9 @@ Some of the power features of binary encoding over textual based encodings are:
 
 
 ##### Dataflow through Databases
+
+In case of databases, process encodes and decodes data, it can be same or different. These processes might run in parallal for scalabilty and fault tolarance, so support for backward and forward compatibility is very important. Also rolling update might cause older and newer version of application code running at the same time.
+
+But there might be cases where an old schema reads new data and updates it, overwriting and removing the new fields by newer schema. So being careful about it is important.
+
+Databases have the ability to store very old data even if the application code has been updated. This is also called *data outlives code*. But for cases like this , migrating to newer database is impractical and expensive, so to handle this, database usually appends null values to new fields in case where data is decoded from data encoded using older schema which did have the new field. 
