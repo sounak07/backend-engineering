@@ -90,3 +90,6 @@ Some of the power features of binary encoding over textual based encodings are:
 - They are much more compact. 
 - Having the need to have Schemas enforce better documentation.
 - Code generation based on schema is really helpful for statically typed languages.
+
+
+##### Dataflow through Databases
