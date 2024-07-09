@@ -3,7 +3,7 @@
 
 Suppose we have a column like a huge text or url, we can't index those fields, what we can is we can add a generated column and calculate the MD5 of that column and index that MD5 column instead and use it in our queries. 
 
-![[Screenshot 2024-06-30 at 12.45.55 PM.png]]
+![alt text](/resources/Screenshot%202024-06-30%20at%2012.45.55%20PM.png)
 
 
 To avoid has collision we can also add the url column as a redundant column.
@@ -15,7 +15,8 @@ url_md5('url_value') and url('url_value')
 To improve this further we can binary string instead of just string. Note that because the MD5 column is a binary column (a string of bytes, not characters), we must use the `UNHEX` function to convert the characters to a binary string.
 
 
-![[Screenshot 2024-06-30 at 12.49.30 PM.png]]
+![alt text](/resources/Screenshot%202024-06-30%20at%2012.49.30%20PM.png)
+
 
 Also a tip to keep a large data column like text or blob , we can consider making that invisible to allow faster fetch since these type of data is usually stored in a separately and the engine needs to fetch that which is costly.
 
@@ -67,19 +68,21 @@ For example, suppose we have the following eight flags:
 8. new_legal_disclaimer
 
 We can assign each flag to a bit in the integer column as follows:
-![[Screenshot 2024-07-09 at 9.58.25 PM.png]]
+![alt text](/resources/Screenshot%202024-07-09%20at%209.58.25%20PM.png)
+
 
 Using this mapping, we can store up to eight flags in a single byte. To store multiple flags, we need to turn on the corresponding bits.
 
 For example, suppose a user has turned on the `dark_mode` and `rollout_chat` flags. To represent this, we need to turn on bits 1 and 5. Using binary notation, this would look like this: `00010100`.
 
-![[Screenshot 2024-07-09 at 9.58.45 PM.png]]
+![alt text](/resources/Screenshot%202024-07-09%20at%209.58.45%20PM.png)
 
 To convert this to an integer value, we can add up the decimal value of each bit that is turned on. In this case, that would be 1 + 16 = 17.
 
 We can store this value, 17, in the `flags` column for this user.
 
-![[Screenshot 2024-07-09 at 9.52.08 PM.png]]
+![alt text](/resources/Screenshot%202024-07-09%20at%209.52.08%20PM.png)
+
 
 to find all users who have both the `dark_mode` and `rollout_chat` flags turned on, we can use the following SQL statement:
 
@@ -328,5 +331,8 @@ SELECT stDistanceSphere(
 ```
 
 gives us the distance between two points on the sphere. It is important to note that the calculation is in meters, and we can use this function to make a simple comparison such as whether the distance is less than a specified value.
+
+One of the tricks to calculate the points with a certain range in sphere could be getting all the values in a bounding box and then eliminating the ones outside of sphere since thats expensive.
+
 
 [Reference](https://planetscale.com/learn/courses/mysql-for-developers/examples/introduction-to-examples)
