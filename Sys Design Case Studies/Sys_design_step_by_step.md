@@ -70,7 +70,87 @@ Similarly for availability, we need to replicate data to different data centres.
 
 ##### How do we store ?
 
+![[Screenshot 2024-07-29 at 9.46.34 PM.png]]
 
+**Data aggregation Basics**
+
+![[Screenshot 2024-07-29 at 9.53.30 PM.png]]
+
+**Checkpointing and Partitioning** 
+
+![[Screenshot 2024-07-29 at 10.14.12 PM.png]]
+
+Checkpointing refers to the process of saving data at certain points in time to preserve the state to be re-used in case of loss of data. The above example shows how we can use the Checkpointing to restore the data into the cache of processing service if its not saved in db in case of a crash of service
+
+Partitioning is having separate queues to store events which also allows parallel processing of events. A hash can be used to select the query for a particular event. 
+
+**Design Processing Service**
+
+![[Screenshot 2024-07-29 at 10.30.30 PM.png]]
+
+The embedded database stores the meta data around the event that we are trying to store. If its a video event it might have channel name, video title etc. The trick is to keep the database in the same machine to avoid network calls.
+
+The internal queue is to support multi processing and streamline the data storage requests to enhance scalability since processing and storage of data might take some time and adding a queue here ensures streamlines it.
+
+The state store is cache store to store the in-memory cache data and reload it from there.
+
+![[Screenshot 2024-07-29 at 10.37.10 PM.png]]
+
+**More concepts** 
+
+ ![[Screenshot 2024-07-29 at 10.50.27 PM.png]]
+
+To improve the overall performance , we should batch sending data to service. This is to ensure that we are not making too many calls and overloading the service. 
+
+Too many retires can cause the service to overload , to avoid that we use Exponential and jitter algos. Exponential backoff increases the wait time between every retry and jitter introduces randomness into the intervals to spread out the load. 
+
+Circuit breaker pattern basically stops a client from invoking the same request again and again thats bound to fail in certain period of time when the errors cross a certain threshold. After certain amount of time the requests are again allowed and if that request passes without errors, its assumed that the error that was causing the issue has been resolved. But setting the error thresholds are timeouts becomes difficult with circuit breakers. 
+
+
+**Load Balancers**
+
+Load balancers are usually either hardware based or software based. ELB from AWS is a software LB. These LBs are usually protocol based , it can TCP based or HTTP based.
+
+In TCP LBs, the LBs don't inspect the content of the data. Its like establishing connection between client and server and sending the data packets which allows handling of large scale of data.
+
+In HTTP based LBs, the LBs can inspect the requests are make certain decisions based on the data in the request's headers or cookies. Also these LBs terminate the requests and don't hold them for continuous period of time. 
+
+Health checking is something that LBs use to monitor the nodes and send request accordingly. To ensure high availability ,the concept of primary and secondary nodes are introduced. The primary nodes serves most of the traffic and secondary nodes come into effect if primary ones fail. 
+
+**Partition Service and Partitions**
+
+![[Screenshot 2024-07-29 at 11.18.46 PM.png]]
+
+In order for the partition service to decide which partition to move the message , some strategy needs to be used. This strategy can be of different types one of them could be hashing. But at scale that could lead to hot partitions meaning the video events with very high views could end being pushed into the same queue. To avoid this video time could be added into the partition key. 
+
+Message formats can be either textual or binary formats. 
+
+**Data retrieval Path**
+
+![[Screenshot 2024-07-29 at 11.27.23 PM.png]]
+
+Storing time series data can be complicated. Suppose we are storing events for every minute of the video, thats a lot of data. So with time data aggregation needs to be done and probably move it to a separate type of storage thats rarely accessed as its old. Suppose i would want to show the user only the aggregated data of 1 year old video. 
+
+![[Screenshot 2024-07-29 at 11.33.16 PM.png]]
+
+
+**Tools**
+
+![[Screenshot 2024-07-29 at 11.36.53 PM.png]]
+
+**Bottlenecks Identification**
+
+- Load testing , soak testing(for memory leaks) can be used. 
+- Monitoring - Errors, latency, traffic , saturation. Telemetry is another important one. 
+  
+Audit systems are very important for visibility of accurate results by system and users. There can be different types of audit systems. 
+
+**Summary**
+
+![[Screenshot 2024-07-29 at 11.48.11 PM.png]]
 
 [Reference](https://www.youtube.com/watch?v=bUHFg8CZFws&t=232s)
+
+
+
 
