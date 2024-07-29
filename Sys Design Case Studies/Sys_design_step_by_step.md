@@ -70,15 +70,18 @@ Similarly for availability, we need to replicate data to different data centres.
 
 ##### How do we store ?
 
-![[Screenshot 2024-07-29 at 9.46.34 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%209.46.34%20PM.png)
+
 
 **Data aggregation Basics**
 
-![[Screenshot 2024-07-29 at 9.53.30 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%209.53.30%20PM.png)
+
 
 **Checkpointing and Partitioning** 
 
-![[Screenshot 2024-07-29 at 10.14.12 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2010.14.12%20PM.png)
+
 
 Checkpointing refers to the process of saving data at certain points in time to preserve the state to be re-used in case of loss of data. The above example shows how we can use the Checkpointing to restore the data into the cache of processing service if its not saved in db in case of a crash of service
 
@@ -86,7 +89,8 @@ Partitioning is having separate queues to store events which also allows paralle
 
 **Design Processing Service**
 
-![[Screenshot 2024-07-29 at 10.30.30 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2010.30.30%20PM.png)
+
 
 The embedded database stores the meta data around the event that we are trying to store. If its a video event it might have channel name, video title etc. The trick is to keep the database in the same machine to avoid network calls.
 
@@ -94,11 +98,13 @@ The internal queue is to support multi processing and streamline the data storag
 
 The state store is cache store to store the in-memory cache data and reload it from there.
 
-![[Screenshot 2024-07-29 at 10.37.10 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2010.37.10%20PM.png)
+
 
 **More concepts** 
 
- ![[Screenshot 2024-07-29 at 10.50.27 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2010.50.27%20PM.png)
+
 
 To improve the overall performance , we should batch sending data to service. This is to ensure that we are not making too many calls and overloading the service. 
 
@@ -119,7 +125,8 @@ Health checking is something that LBs use to monitor the nodes and send request 
 
 **Partition Service and Partitions**
 
-![[Screenshot 2024-07-29 at 11.18.46 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2011.18.46%20PM.png)
+
 
 In order for the partition service to decide which partition to move the message , some strategy needs to be used. This strategy can be of different types one of them could be hashing. But at scale that could lead to hot partitions meaning the video events with very high views could end being pushed into the same queue. To avoid this video time could be added into the partition key. 
 
@@ -127,16 +134,19 @@ Message formats can be either textual or binary formats.
 
 **Data retrieval Path**
 
-![[Screenshot 2024-07-29 at 11.27.23 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2011.27.23%20PM.png)
+
 
 Storing time series data can be complicated. Suppose we are storing events for every minute of the video, thats a lot of data. So with time data aggregation needs to be done and probably move it to a separate type of storage thats rarely accessed as its old. Suppose i would want to show the user only the aggregated data of 1 year old video. 
 
-![[Screenshot 2024-07-29 at 11.33.16 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2011.33.16%20PM.png)
+
 
 
 **Tools**
 
-![[Screenshot 2024-07-29 at 11.36.53 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2011.36.53%20PM.png)
+
 
 **Bottlenecks Identification**
 
@@ -147,7 +157,8 @@ Audit systems are very important for visibility of accurate results by system an
 
 **Summary**
 
-![[Screenshot 2024-07-29 at 11.48.11 PM.png]]
+![alt text](/resources/Screenshot%202024-07-29%20at%2011.48.11%20PM.png)
+
 
 [Reference](https://www.youtube.com/watch?v=bUHFg8CZFws&t=232s)
 
