@@ -1,5 +1,3 @@
-### Go Debunked
-
 Go is a compiled time language but with auto memory management. So it kinda sits in the middle of Purely compiled languages like C, Rust etc and Interpreted Languages like Python , Javascript. 
 
 In Interpreted languages like Python , code is read and compiled at runtime while in Go code is compiled into a executable binary first and then that executable is run to execute the program. 
@@ -234,7 +232,7 @@ type car struct {
 }
 
 type truck struct {
-  // "car" is embedded, so the definition of a
+  // "car" is embedded, if we see car doesn't have a name, so the definition of a
   // "truck" now also additionally contains all
   // of the fields of the car struct
   car
@@ -266,7 +264,7 @@ fmt.Println(lanesTruck.model)
 
 #### Nested vs Embedded 
 
-- In we are specifying the type with a name but in embedded we are directly putting the struct as a member and not just the type. ***(Refer above sections for examples)***
+- In nested, we are specifying the type with a name but in embedded we are directly putting the struct as a member and not just the type. ***(Refer above sections for examples)***
 
 #### Struct methods in Go
 
@@ -291,10 +289,270 @@ fmt.Println(r.area())
 // prints 50
 ```
 
-
 ### Interfaces
 
+[Interfaces](https://go.dev/tour/methods/9) are just collections of method signatures. A type "implements" an interface if it has methods that match the interface's method signatures.
 
+```go
+type shape interface {
+  area() float64
+  perimeter() float64
+}
 
+type rect struct {
+    width, height float64
+}
+func (r rect) area() float64 {
+    return r.width * r.height
+}
+func (r rect) perimeter() float64 {
+    return 2*r.width + 2*r.height
+}
 
+type circle struct {
+    radius float64
+}
+func (c circle) area() float64 {
+    return math.Pi * c.radius * c.radius
+}
+func (c circle) perimeter() float64 {
+    return 2 * math.Pi * c.radius
+}
+
+```
+
+We can think of interfaces as same as abstract classes in Python , and struct and its methods as implemented classes. We can implement different types of structs with the same interface as above.
+
+In Go a single type can implement multiple interfaces. 
+
+```go
+package main
+
+func (e email) cost() int {
+	// ?
+	if e.isSubscribed {
+		return 5*len(e.body)
+	}
+
+	return 2*len(e.body)
+}
+
+func (e email) format() string {
+	// ?
+	if e.isSubscribed {
+		return 'Subscribed'
+	}
+
+	return 'Not Subscribed'
+}
+
+type expense interface {
+	cost() int
+}
+
+type formatter interface {
+	format() string
+}
+
+type email struct {
+	isSubscribed bool
+	body         string
+}
+```
+
+Interfaces with interface method params
+
+```go
+type Copier interface {
+  Copy(sourceFile string, destinationFile string) (bytesCopied int)
+}
+```
+
+#### Type Switches
+
+```go
+func printNumericValue(num interface{}) {
+	switch v := num.(type) {
+	case int:
+		fmt.Printf("%T\n", v)
+	case string:
+		fmt.Printf("%T\n", v)
+	default:
+		fmt.Printf("%T\n", v)
+	}
+}
+
+func main() {
+	printNumericValue(1)
+	// prints "int"
+
+	printNumericValue("1")
+	// prints "string"
+
+	printNumericValue(struct{}{})
+	// prints "struct {}"
+}
+```
+
+#### Clean Interfaces
+
+- keep interfaces small.Interfaces are meant to define the minimal behavior necessary to accurately represent an idea or concept.
+  
+```go
+type File interface {
+    io.Closer
+    io.Reader
+    io.Seeker
+    Readdir(count int) ([]os.FileInfo, error)
+    Stat() (os.FileInfo, error)
+}
+```
+
+- An interface should define what is necessary for other types to classify as a member of that interface. They shouldn’t be aware of any types that happen to satisfy the interface at design time.For example, let’s assume we are building an interface to describe the components necessary to define a car.
+
+```go
+type car interface {
+	Color() string
+	Speed() int
+	IsFiretruck() bool
+}
+```
+
+- Interfaces are not classes. They do not implement inheritance. Interfaces do not implement methods. They do not have Contractors and destructors 
+
+### Errors
+
+```go
+type error interface {
+    Error() string
+}
+```
+
+```go
+// Atoi converts a stringified number to an integer
+i, err := strconv.Atoi("42b")
+if err != nil {
+    fmt.Println("couldn't convert:", err)
+    // because "42b" isn't a valid integer, we print:
+    // couldn't convert: strconv.Atoi: parsing "42b": invalid syntax
+    // Note:
+    // 'parsing "42b": invalid syntax' is returned by the .Error() method
+    return
+}
+// if we get here, then
+// i was converted successfully
+```
+
+#### Formatting Strings
+
+```go
+const name = "Kim"
+const age = 22
+s := fmt.Sprintf("%v is %v years old.", name, age)
+// s = "Kim is 22 years old."
+
+// %f - floats
+// %v/%s - string
+// %v - int
+// %.2f - limit float points to 2
+```
+#### Error Interface
+
+```go
+type userError struct {
+    name string
+}
+
+func (e userError) Error() string {
+    return fmt.Sprintf("%v has a problem with their account", e.name)
+}
+```
+
+This is essentially an implementation of the error interface so we can use this for our error handling. 
+
+```go
+func sendSMS(msg, userName string) error {
+    if !canSendToUser(userName) {
+        return userError{name: userName}
+    }
+    ...
+}
+```
+
+Another example 
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+type divideError struct {
+	dividend float64
+}
+
+func (de divideError) Error() string {
+	return fmt.Sprintf("can not divide %.2f by zero", de.dividend)
+}
+
+// ?
+
+func divide(dividend, divisor float64) (float64, error) {
+	if divisor == 0 {
+		return 0, divideError{dividend: dividend}
+	}
+	return dividend / divisor, nil
+}
+
+```
+
+#### Error Package
+
+The Go standard library provides an "errors" package that makes it easy to deal with errors.
+Read the godoc for the [errors.New()](https://pkg.go.dev/errors#New) function, but here's a simple example:
+
+```go
+package main
+
+import (
+	"errors"
+)
+
+func divide(x, y float64) (float64, error) {
+	if y == 0 {
+		error.New("error")
+	}
+	return x / y, nil
+}
+
+```
+
+#### Panic Function
+
+there is another way to deal with errors in Go: the [`panic`](https://golang.org/ref/spec#Handling_panics) function. When a function calls `panic`, the program crashes and prints a stack trace. As a general rule, _do not use panic!_
+
+The `panic` function yeets control out of the current function and up the call stack until it reaches a function that [defers a `recover`](https://go.dev/blog/defer-panic-and-recover). If no function calls `recover`, the goroutine (often the entire program) crashes.
+
+```go
+func enrichUser(userID string) User {
+    user, err := getUser(userID)
+    if err != nil {
+        panic(err)
+    }
+    return user
+}
+
+func main() {
+    defer func() {
+        if r := recover(); r != nil {
+            fmt.Println("recovered from panic:", r)
+        }
+    }()
+
+    // this panics, but the defer/recover block catches it
+    // a truly astonishingly bad way to handle errors
+    enrichUser("123")
+}
+```
 
