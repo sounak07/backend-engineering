@@ -2,4 +2,5 @@
 
 This repo contains notes on various Topics on Engineering. I will keep contributing new stuff everyday.
 
-[Follow me on twitter](https://twitter.com/sounak_08)
+[Twitter](https://twitter.com/sounak_08)
+[LinkedIn](https://www.linkedin.com/in/sounak08)
