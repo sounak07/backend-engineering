@@ -8,13 +8,13 @@ The kafka message has 3 parts -
 - Key
 - Value
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.17.41%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.17.41%20PM.png)
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.28.04%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.28.04%20PM.png)
 
 A real world example for partitions could be having partitions for different types of payments say for Topic A, P1 - Credit cards , P2 - UPI, P3 - COD etc.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.28.26%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.28.26%20PM.png)
 
 **Key determines the partition the message should go in and inserted in order**.
 
@@ -24,7 +24,7 @@ Putting everything in one partition could hammer that leading to failures, choos
 
 Say partition key is chosen as movie id , if that movie is streamed by a lot of people , same partition will be hit leading to choking things. Instead pick a compound keys.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.34.29%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.34.29%20PM.png)
 
 **Brokers**
 
@@ -42,7 +42,7 @@ A **topic** is just a logical grouping of partitions. Topics are the way you pub
 
 When there is too much load for one consumer to handle, we can add multiple consumers consuming from same partition, this group of consumers is called Consumer groups.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%203.18.24%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%203.18.24%20PM.png)
 
 Consumer groups allow multiple consumers to work together; kafka makes sure each consumer(from each group) only processes one message only once.
 Say  
@@ -50,14 +50,14 @@ Partition P1 can only be consumed by Consumer C1 and C2.
 P2 can only be consumed by C3.
 During failure say C1 fails, kafka corrects ifself to let C2 consume all the messages from P1.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.43.19%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.43.19%20PM.png)
 
 #### Data persistence
 
 Consumers track the last processed message using offsets telling the consumer which message was processed last and which to process next. This data is saved in kafka.
 Saving the correct data is crucial since in of a crash consumers will pick up from the offset , committing to early would loose the messages and late commits could to lead to processing same message twice.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.38.53%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.38.53%20PM.png)
 
 #### Delivery Guarantees
 
@@ -71,7 +71,7 @@ Three delivery Guarantees are offered.
 
 Replication in kafka comes with leader and followers. Each leader handles read and writes propagating its data(copy) to its followers , if a leader fails the follower takes over as the new leader without any failures.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.50.37%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.50.37%20PM.png)
 
 Kafka can be configured to wait for writes in all followers but that is very slow but very safe.
 
@@ -79,9 +79,9 @@ Kafka can be configured to wait for writes in all followers but that is very slo
 
 Uber drivers propagating live locations of cars. Uber uses Partitions as per geography to allow maximum scalability.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.52.39%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.52.39%20PM.png)
 
-![alt text](/resources/Screenshot%202025-11-18%20at%201.52.57%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.52.57%20PM.png)
 
 #### Trade-off and Limitations
 
@@ -108,7 +108,7 @@ Each consumer uses the offset of data in partitions to determine what it is they
 
 Consumers read messages from Kafka topics using a **pull-based model**. Unlike some messaging systems that push data to consumers, Kafka consumers actively poll the broker for new messages at intervals they control, this pull approach was a deliberate design choice that provides several advantages: it lets consumers control their consumption rate, simplifies failure handling, prevents overwhelming slow consumers, and enables efficient batching.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%209.45.46%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%209.45.46%20PM.png)
 
 #### When to use Kafka
 
@@ -116,17 +116,17 @@ Consumers read messages from Kafka topics using a **pull-based model**. Unlike s
 
 **Youtube**
 
-![alt text](/resources/Screenshot%202025-11-18%20at%209.50.29%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%209.50.29%20PM.png)
 
 You have processing that can be done asynchronously. YouTube is a good example of this. When users upload a video we can make the standard definition video available immediately and then put the video (via link) a Kafka topic to be transcoded when the system has time.
 
 **InOrder Message Processing (Ticket bookings)**
 
-![alt text](/resources/Screenshot%202025-11-18%20at%209.51.00%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%209.51.00%20PM.png)
 
 **Decouple producer and Consumer**
 
-![alt text](/resources/Screenshot%202025-11-18%20at%209.53.20%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%209.53.20%20PM.png)
 
 You want to decouple the producer and consumer so that they can scale independently. Usually this means that the producer is producing messages faster than the consumer can consume them. This is a common pattern in microservices where you want to ensure that one service can't take down another.
 
@@ -134,13 +134,13 @@ You want to decouple the producer and consumer so that they can scale independen
 
 **Ad Click Aggregator**
 
-![alt text](/resources/Screenshot%202025-11-18%20at%209.55.02%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%209.55.02%20PM.png)
 
 You require continuous and immediate processing of incoming data, treating it as a real-time flow. See [Design an Ad Click Aggregator](https://www.hellointerview.com/learn/system-design/problem-breakdowns/ad-click-aggregator) for an example where we aggregate click data in real-time.
 
 **Live Comments**
 
-![alt text](/resources/Screenshot%202025-11-18%20at%209.55.51%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%209.55.51%20PM.png)
 
 Messages need to be processed by multiple consumers simultaneously. In [Design FB Live Comments](https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-live-comments) we can use Kafka as a pub/sub system to send comments to multiple consumers(all the other users watching the live video/comment).
 
@@ -151,7 +151,7 @@ Messages need to be processed by multiple consumers simultaneously. In [Design 
 **Constraints**
 Aim for < 1MB per message
 
-![alt text](/resources/Screenshot%202025-11-18%20at%2010.01.41%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%2010.01.41%20PM.png)
 
 One broker could store upto 1TB data(append-only logs files) and process 10k msg/sec
 
@@ -164,7 +164,7 @@ Not having a good partition key strategy could lead to hot partition. Even with 
 
 - Remove the key, LOL. But if you dont need ordering, this is the simplest approach.
 - Compound keys with Hash
-  ![alt text](/resources/Screenshot%202025-11-18%20at%201.34.29%20PM.png)
+  ![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.34.29%20PM.png)
 - Backpressure - Slow down the Producer
 
 ### Fault Tolerance and Durability
@@ -200,7 +200,7 @@ const producer = kafka.producer({
 
 Kafka does not actually support retries for consumers out of the box (but [AWS SQS](https://aws.amazon.com/sqs/) does!) so we need to implement our own retry logic. One common pattern is to set up a custom topic that we can move failed messages to and then have a separate consumer that processes these messages. This way, we can retry messages as many times as we want without affecting the main consumer. If a given message is retried too many times, we can move it to a dead letter queue (DLQ). DLQs are just a place to store failed messages so that we can investigate them later.
 
-![alt text](/resources/Screenshot%202025-11-18%20at%2010.24.21%20PM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%2010.24.21%20PM.png)
 
 ### Perfomance Optimisations
 
@@ -235,16 +235,16 @@ In your interview, you may be asked to design a system that needs to store messa
 
 #### Kafka vs Rabbitmq
 
-![alt text](/resources/Screenshot%202025-11-19%20at%2011.45.50%20AM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-19%20at%2011.45.50%20AM.png)
 
 1. kafka is much more expensive to run, especially because of the persistence
 2. rabbitmq is generally slower at processing messages (hence unsuitable for streaming)
 3. kafka has a lot more plugins for different backend services
 4. rabbitmq is relatively simpler conceptually hence faster to integrate
 
-![alt text](/resources/Screenshot%202025-11-19%20at%2011.47.49%20AM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-19%20at%2011.47.49%20AM.png)
 
-![alt text](/resources/Screenshot%202025-11-19%20at%2011.48.16%20AM.png)
+![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-19%20at%2011.48.16%20AM.png)
 
 ### 🔥 **Conceptual Difference (Deep but Simple)**
 
