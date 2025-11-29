@@ -1,6 +1,8 @@
 ## Kafka for dummies
 
-#### Message in Kafka
+Kafka is an open-source event streaming platform for building real-time data pipelines and streaming applications. Kafka's high-throughput, easy to scale and fault tolerant design makes it an effective choice for data intensive applications. It provides permanent storage of data logs since it uses WAL(append only) files to store data.
+
+### Message in Kafka
 
 The kafka message has 3 parts -
 
@@ -38,7 +40,7 @@ Each broker has a number of **partitions**. Each partition is an ordered, immuta
 
 A **topic** is just a logical grouping of partitions. Topics are the way you publish and subscribe to data in Kafka. When you publish a message, you publish it to a topic, and when you consume a message, you consume it from a topic. Topics are always multi-producer; that is, a topic can have zero, one, or many producers that write data to it.
 
-#### Managing Consumer
+### Managing Consumer
 
 When there is too much load for one consumer to handle, we can add multiple consumers consuming from same partition, this group of consumers is called Consumer groups.
 
@@ -52,14 +54,14 @@ During failure say C1 fails, kafka corrects ifself to let C2 consume all the mes
 
 ![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.43.19%20PM.png)
 
-#### Data persistence
+### Data persistence
 
 Consumers track the last processed message using offsets telling the consumer which message was processed last and which to process next. This data is saved in kafka.
 Saving the correct data is crucial since in of a crash consumers will pick up from the offset , committing to early would loose the messages and late commits could to lead to processing same message twice.
 
 ![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.38.53%20PM.png)
 
-#### Delivery Guarantees
+### Delivery Guarantees
 
 Three delivery Guarantees are offered.
 
@@ -67,7 +69,7 @@ Three delivery Guarantees are offered.
 - Atleast once, no loose but duplication can happen
 - Exactly once, no loose, no duplication, hard to setup
 
-#### Replication and Durability
+### Replication and Durability
 
 Replication in kafka comes with leader and followers. Each leader handles read and writes propagating its data(copy) to its followers , if a leader fails the follower takes over as the new leader without any failures.
 
@@ -75,7 +77,7 @@ Replication in kafka comes with leader and followers. Each leader handles read a
 
 Kafka can be configured to wait for writes in all followers but that is very slow but very safe.
 
-#### Real World examples
+### Real World examples
 
 Uber drivers propagating live locations of cars. Uber uses Partitions as per geography to allow maximum scalability.
 
@@ -83,13 +85,13 @@ Uber drivers propagating live locations of cars. Uber uses Partitions as per geo
 
 ![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%201.52.57%20PM.png)
 
-#### Trade-off and Limitations
+### Trade-off and Limitations
 
 - It optimises for Throughput not latency
 - Not suitable for Request-Response patterns
 - Kafka guarantees order only within a single partition not across an entire topic, so parallelising could be difficult. Partial ordering is accepted in most cases.
 
-#### How Kafka works
+### How Kafka works
 
 When a message is published into a topic in kafka , kafka determines the partition which this message needs to go. They are few steps -
 
@@ -110,7 +112,7 @@ Consumers read messages from Kafka topics using a **pull-based model**. Unlike s
 
 ![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-18%20at%209.45.46%20PM.png)
 
-#### When to use Kafka
+### When to use Kafka
 
 ### As a Message Queue
 
@@ -144,7 +146,7 @@ You require continuous and immediate processing of incoming data, treating it as
 
 Messages need to be processed by multiple consumers simultaneously. In [Design FB Live Comments](https://www.hellointerview.com/learn/system-design/problem-breakdowns/fb-live-comments) we can use Kafka as a pub/sub system to send comments to multiple consumers(all the other users watching the live video/comment).
 
-#### What to know about Kafka
+### What to know about Kafka
 
 ### Scalability
 
@@ -233,7 +235,7 @@ Kafka topics have a retention policy that determines how long messages are retai
 
 In your interview, you may be asked to design a system that needs to store messages for a longer period of time. In this case, you can configure the retention policy to keep messages for a longer duration. Just be mindful of the impact on storage costs and performance.
 
-#### Kafka vs Rabbitmq
+### Kafka vs Rabbitmq
 
 ![alt text](https://raw.githubusercontent.com/sounak07/backend-engineering/main/resources/Screenshot%202025-11-19%20at%2011.45.50%20AM.png)
 
@@ -358,7 +360,7 @@ If the message represents **work to be done**, RabbitMQ wins.
 
 ```
 
-#### References
+### References
 
 [ByteByteGo](https://www.youtube.com/watch?v=7_wkWQ9rB5I)
 [Nana](https://www.youtube.com/watch?v=B7CwU_tNYIE&t=40s)
