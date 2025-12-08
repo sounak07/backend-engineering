@@ -155,6 +155,8 @@ Serialization is basically converting the data to a standard format which is lan
 
 #### Authentication and Authorization
 
+Authentication is WHO.
+
 Modern Auth -
 
 - OAuth
@@ -251,6 +253,23 @@ This is an extension of 0Auth 2.0 where the along with auth token an ID token is
 Single Sign-ON (SSO):
 
 SSO is a concept where the user signs into a central IDP (Identity provider) and the IDp provides Bearer token similar to 0Auth 2.0 to let the user sign in into multiple applications without having to sign in again. This is built on top of SAML and OIDC.
+
+##### Authorisation
+
+Authorisation is WHAT, what permissions this user has, what this user can do.
+A use case for this authorisation is Role based Access Control.
+This allows the server to assign certain users specific roles that are different from others.
+Say some users are admin, some are just users etc.
+This is usually verified and assigned from configs stored in db or some other persistant storage.
+
+##### Error message and Timing Attacks
+
+Friendly error messages can allow attackers to identify whats missing optimise their attack for success. Say if we prompt a message incorrect password, the attacker might know that username might be correct and password is wrong.
+So avoiding friendly error messages is recommended.
+
+Timing attacks is another crucial concept in auth which allows attackers to time the requests to identify whats missing.
+Say if username is correct but password is wrong but for that comparison server needs to hash the password and compare with hashed stored pass, since hashing takes time , the difference in time could tell that password is where the request stopped.
+Using constant time responses or simulating delays in responses is recommended to avoid this.
 
 #### References
 
