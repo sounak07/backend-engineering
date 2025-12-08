@@ -154,3 +154,104 @@ Serialization is basically converting the data to a standard format which is lan
   - Avro
 
 #### Authentication and Authorization
+
+Modern Auth -
+
+- OAuth
+- JWT based
+- Password Less
+- Zero trust architecture
+
+**Sessions**
+Sessions stores user related info which can be used to authenticate users when they make HTTP requests to certain resources to add/fetch data.
+When a user authenticates themselves, a new session is created with user info and session info like session_id, expiry etc and are stored in some persistant storage like in a db or distributed cache. The session_id is then returned as cookie for the clients to be used for authorization without needing to authenticate everytime.
+When the expiry time is over for a session , the server creates a new session updating the old one , sending a new cookie. This allows seemless distributed authorization throughout.
+
+Issues with Sessions -
+
+- Memory overhead became a major problem as we scale, storing the data of so many users became a major problem.
+- With distributed architecture becoming mainstream, syncing the data throughout for all the systems introduced latency.
+
+**JWT**
+JSON web tokens became quite popular to solve these above issues. Its a stateless way to authorise users releasing the server of the overhead of storing and managing sessions.
+
+JWT has 3 parts -
+Headers -
+
+```
+{
+  "alg": "HS256" //hashing algo
+  "type": "jwt"
+}
+```
+
+Payload - Anything related to user data.
+
+```
+{
+  "iat":
+  "id":
+  "name":
+  "role"
+
+}
+```
+
+Signature
+The `secret-to-decode-encode` the data to generate the token.
+
+This solved a bunch of issues around storage, scalability , statelessness. This allowed microservices to authenticate very seamlessly without needing to sync any data to get context.
+Also they are very portable, they can sent as cookies, stored in local storage or any else easily.
+
+There some problems too like token theft , Manual revocation of access became a problem and had to for them to expire.
+
+**Hybrid JWT**
+Its a mix of stateless and stateful, extract the user data and check for its presence or maintain a list of blacklisted JWTs. But the questions remains why not just use sessions instead , they are more secure. So its a matter of debates and tradeoff. Using a auth provider can be a good choice around this to avoid these overheads.
+
+**Cookie**
+Cookie is a way to store certain info in client's browser which can used to authorise the users trying to access a server resource in all subsequent servers, say a auth token. Its easier to set cookies for the server since servers have access to browser cookies.
+An important thing to note is cookies are limited to a server, a cookie provided by one server can't be used by a different server.
+
+Stateful Auth - Session is stateful auth.
+Stateless Auth - JWT , a signed token.
+API key - Designed for machine to machine programmatic interactions
+
+##### 0Auth -
+
+OAuth is a protocol to delegate access. It allows resource owner(user) to grant services access to limited resources without needing to share user creds.
+
+0Auth 1.0
+
+![](https://miro.medium.com/v2/resize:fit:700/1*fACWJ6k07mTjLfermXFFPg.png)
+
+In OAuth 1.0, the client receives an access token (and token secret) once after the user authorizes the app.  
+For every subsequent API call, the client must generate a cryptographic signature using the consumer secret, token secret, and request data.  
+The resource server re-calculates and verifies this signature on every request to ensure authenticity and integrity.  
+The token itself is not re-issued on every request.
+
+0Auth 2.0
+
+![](https://miro.medium.com/v2/resize:fit:700/1*hOycj214z21NsUKXdDzvGA.png)
+
+0Auth 2.0 does not have these complexity, its uses HTTPS with bearer tokens to inform its identity. These doesn't need to be generated on every request but can have expiry.
+
+Open ID Connect
+
+This is an extension of 0Auth 2.0 where the along with auth token an ID token is also issued which carries the identity of the resource owner. This allows clients to verify the resource owner's identify. It can also be used to get some basic resource owner info.
+
+| Feature          | OAuth 1.0                          | OAuth 2.0                           | OAuth 2.0 + OIDC                 |
+| ---------------- | ---------------------------------- | ----------------------------------- | -------------------------------- |
+| Purpose          | Authorization                      | Authorization                       | Identity + Authentication        |
+| Signing          | Cryptographic signatures (complex) | No signatures (simpler), uses HTTPS | Same as OAuth 2.0, plus ID Token |
+| Token Types      | Access Token                       | Access Token                        | **ID Token + Access Token**      |
+| Identity/ Login? | ❌ No                              | ❌ No                               | ✅ Yes (SSO login layer)         |
+| Security         | Good but complex                   | Depends on TLS                      | Strong (with JWT ID Tokens)      |
+| Mobile-friendly  | ❌ Hard                            | ✅ Yes                              | ✅ Yes                           |
+
+Single Sign-ON (SSO):
+
+SSO is a concept where the user signs into a central IDP (Identity provider) and the IDp provides Bearer token similar to 0Auth 2.0 to let the user sign in into multiple applications without having to sign in again. This is built on top of SAML and OIDC.
+
+#### References
+
+[Medium](https://medium.com/identity-beyond-borders/oauth-1-0-vs-oauth-2-0-e36f8924a835)
