@@ -48,4 +48,6 @@ So once the **Authoritative name servers** sends back the resolver the IP addres
 
 The Resolver will also store the IP in its cache in order to avoid all these steps the next time it has the same query.
 
+**END**
+
 
