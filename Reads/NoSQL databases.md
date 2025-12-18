@@ -1,0 +1,13 @@
+The major reasons for going with NoSQL databases are **scalability** and **flexibility**.
+NoSQL dbs are designed to scale horizontally , allowing them to handle large scale of distributed data across multiple servers. They support **replication** and **sharding** by default.
+NoSQL have a huge advantage because of their schema less architecture allowing them easily store unstructured data or semi-structured data like documents, images, videos etc.
+
+There are bunch of NoSQL databases
+
+- _Document Databases_ - The most common type of NoSQL databases. In this type, data is stored in document form like in JSON, XML etc. Mongodb, CouchDB are some of the examples of document based NoSQL. Based on the use cases they are readily used in various applications even can be considered as a replacement for SQLs.
+- _Key-Value Databases_ - In this type, data is stored in key value pairs. Redis , Dynamodb are some of the notable key-value NoSQLs. They are readily use for caching , storing shopping cart data etc.
+- _Column Oriented Database_ - In this type, data is stored in as columns instead of rows. Apache Cassandra is a very popular choice for this. They are primarily used for analytics. For col based dbs retrieval/storage of a specific type of data becomes very efficient.
+  - In a column-based storage model, all the values for a particular attribute (in this case, salaries) are stored contiguously in memory or on disk. This means that when you need to retrieve the salaries of all employees, the database system can efficiently read just the column containing the salaries without needing to read through any other columns. Since the database system doesn't have to read unnecessary data (like employee names, ages, etc.), it results in reduced I/O (Input/Output) operations, which can lead to better performance, especially when dealing with large datasets.
+  - In contrast, in a row-based storage model, all the data for each record (employee) is stored together. So when you retrieve salaries using a row-based storage model, the database system needs to read through all the rows to extract the salary information, even though you're only interested in one specific attribute. This can result in more I/O operations and potentially slower performance, especially if the dataset is large.
+    ![Screenshot_2024-02-21_at_11.42.43_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2024-02-21_at_11.42.43_PM.png)
+- _Graph based Databases_ - In this type, data is stored as nodes of graph where each node is connected to the other and are stored as first-class element so they requirement for joins goes away. Neo4j is a prime example.
