@@ -276,15 +276,34 @@ A way to transform the data in a way thats useful and accepted by the input laye
 
 Say an email sent as SounAk@gmail.c is still valid, we can transform it in a suitable format of sounak@gmail.c and use it. 
 
-#### Handlers, services and repositories
+#### Controllers, services and repositories
 
-##### Handlers
+**Handlers/Controllers**
 Each handler receives two objects - request and response. 
 Once request object is received , the handler deserializes the data to its native data format, on failure of this we send a 400 to client. 
+We do validations and transformations in this layer; all the HTTP related operations should also be limited to this layer.
 
+**Service**
+All the processing should be done by the service. The service should API agnostic, it shouldn't have any signatures of API, it should just be a processing layer.  A service call existing and process without calling a repository.
 
+**Repository**
+Mostly the layer that handles the database operations and is usually managed from the service layer. 
 
+#### Middlewares and Request Contexts
 
+**Middleware**
+
+A middleware receives a request, response and a special function next from the runtime. Next is a function to pass the execution to the next middleware or execution function. Please know that middleware are intermediaries in the execution cycle and mostly not the end of them, but they surely end a request and send a response back if they choose to. 
+
+Middlewares are basically a way to run some logic for every API request a server receives. They are like functions. Without them we would have to duplicate the logic in every handler or call a function in every handler. Middlewares allow us to avoid that. 
+
+Middlewares can be used for security checks like auth token checks, add some context to the request objects(add some headers), loggers , rate limit checks,  etc. 
+Global error handlers are also a major usecase of middlewares, even compressions can be done with middlewares.
+
+**Request Context**
+
+Request context carries the metadata of a particular request which can be used as a state by the sequent handlers or middlewares to make certain decisions. Say user data after auth can be stored there. Request id can also be stored in the context, this acts as unique id throughout the request to trace the request. 
+Its safer to extract and store user id from auth token as this way we are not allowing attackers to use the request data to get info of other users by injecting user ids of non authenticated users. 
 #### References
 
 [Medium](https://medium.com/identity-beyond-borders/oauth-1-0-vs-oauth-2-0-e36f8924a835)
