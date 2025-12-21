@@ -5,7 +5,7 @@
 How do we store data similar to above, basically CPU/memory metrics considering there would be huge number of writes? 
 SQL cannot store these many events, if we do it would be super expensive, even with sharding, costs won't come down; and a basic the data query will put a huge load on the server. So SQL isn't really the right choice to solve this problem. 
 
-**Append-Only Storage**
+##### Append-Only Storage
 
 ![Screenshot_2025-12-21_at_10.33.05_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2025-12-21_at_10.33.05_PM.png)
 
@@ -13,7 +13,7 @@ Random access be it to memory or disks are slow, but if we manage to store them 
 But how do we organise the append-only storage so the search is quick and efficient. 
 We use LLM trees. 
 
-**LSM and SSTables**
+##### LSM and SSTables
 
 ![Screenshot_2025-12-21_at_10.56.16_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2025-12-21_at_10.56.16_PM.png)
 
@@ -25,11 +25,13 @@ An LSM(Log-Structured Merge Tree) uses **SSTables** (Sorted String Tables) a
 3. **Reads (Multi-Level):** A read checks the Memtable first, then sequentially checks SSTables (newest to oldest), using indexes (like Bloom filters) to quickly skip files that don't contain the key.
 4. **Compaction (Merge):** Background processes merge smaller SSTables into larger, more organized ones, removing old data and "tombstones" (markers for deleted data) to keep data fresh and efficient.
 
-**Delta encoding**
+##### Delta encoding
 
 ![Screenshot_2025-12-22_at_12.20.51_AM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2025-12-22_at_12.20.51_AM.png)
 
 One of the tricks we can use to store data in database is to store the delta instead , say in the example of temperature or timestamps, leading us to store much smaller values taking up less space and involving better compression. 
-If we store delta of deltas that even more uniform and easy to compress considering the recorded timestamps are at regular intervals. 
+If we store delta of deltas that even more uniform and easy to compress considering the recorded timestamps are at regular intervals.
+
+##### Time-Based Partitioning
 
 
