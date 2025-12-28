@@ -25,6 +25,8 @@ An LSM(Log-Structured Merge Tree) uses **SSTables** (Sorted String Tables) a
 3. **Reads (Multi-Level):** A read checks the Memtable first, then sequentially checks SSTables (newest to oldest), using indexes (like Bloom filters) to quickly skip files that don't contain the key.
 4. **Compaction (Merge):** Background processes merge smaller SSTables into larger, more organized ones, removing old data and "tombstones" (markers for deleted data) to keep data fresh and efficient.
 
+Refer - [Chapter 3 - Storage and Retrieval](./Chapter_3_-_Storage_and_Retrieval.md)
+
 ##### Delta encoding
 
 ![Screenshot_2025-12-22_at_12.20.51_AM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2025-12-22_at_12.20.51_AM.png)

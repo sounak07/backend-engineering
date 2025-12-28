@@ -304,6 +304,38 @@ Global error handlers are also a major usecase of middlewares, even compressions
 
 Request context carries the metadata of a particular request which can be used as a state by the sequent handlers or middlewares to make certain decisions. Say user data after auth can be stored there. Request id can also be stored in the context, this acts as unique id throughout the request to trace the request. 
 Its safer to extract and store user id from auth token as this way we are not allowing attackers to use the request data to get info of other users by injecting user ids of non authenticated users. 
+
+#### API Design 
+
+Tim berners lee invented the WWW; initial HTTP, browsers, web server, web browser. 
+Roy fielding was the architecture of the web, introducing client-server-isolating each block to evolve on its own. 
+He also introduced uniform interface ,cache, making request stateless , code on demand (js executables in client)
+
+##### Idempotency 
+
+The outcome and the side effects of an API request no matter how many times its called should remain the same. Say if somebody has paid for a service online, they should not be paying it again. 
+
+A **GET** request is always idempotent-it will always return some data in a specific format. 
+**PATCH**(partial update) and **PUT**(Complete replacement) are also idempotent since the outcome is updating of data not really creating anything new and state remains same.
+**DELETE** is also idempotent since the outcome is removing some data no matter what. 
+**POST** however is not idempotent since its creating something new to its actually changing the state.
+**POST** can be a universal method for actions that don't fall in any other method, say /send-email. 
+
+##### Designing API Interface
+
+After going through figma wireframes, we need to design db schemas and finally we come API interfaces. 
+
+**Principles of Designing REST APIs**
+
+- While designing an API which is about getting/creating/updating a book, we should use /books not /book since the resource itself is not a singular entity. 
+- Not adding spaces in urls, instead use slugs-a human readable representation of a property of a resource. Say - DHL US -> dhl_us/dhl-us
+- Pagination in APIs should have some params like limit, page and total which represents the number of data we want from data, which the portion of data we want and total data present respectively. 
+- Sorting should also be supported in the list APIs
+- APIs should have some sane defaults, also should have checks for unreasonable  values passed for defaults.
+
 #### References
 
 [Medium](https://medium.com/identity-beyond-borders/oauth-1-0-vs-oauth-2-0-e36f8924a835)
+[Youtube Playlist](https://www.youtube.com/playlist?list=PLui3EUkuMTPgZcV0QhQrOcwMPcBCcd_Q1)
+
+
