@@ -332,6 +332,7 @@ After going through figma wireframes, we need to design db schemas and finally w
 - Pagination in APIs should have some params like limit, page and total which represents the number of data we want from data, which the portion of data we want and total data present respectively. 
 - Sorting should also be supported in the list APIs
 - APIs should have some sane defaults, also should have checks for unreasonable  values passed for defaults.
+- A custom action API should use POST and the API structure for a clone API should look like `{base}/projects/{id}/clone` 
 
 #### References
 
