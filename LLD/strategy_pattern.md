@@ -1,4 +1,4 @@
-## Strategy Pattern
+### Strategy Pattern
 
 The Strategy Pattern is a behavioral design pattern that allows an application to select and switch between different algorithms at runtime without changing the code that uses them.
 
