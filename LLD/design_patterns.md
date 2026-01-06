@@ -224,46 +224,65 @@ Instead of creating subclasses for every new functionality, this pattern uses co
 
 ```python
 
-class BasePizza:
+from abc import ABC, abstractmethod
+
+
+class BasePizza(ABC):
+    @abstractmethod
+    def get_cost(self) -> int:
+        pass
+
+# IS-A BasePizza
+class Margaritta(BasePizza):
     def get_cost(self):
-        return 10
+        return 100
 
-    def get_ingredients(self):
-        return "Tomato, Cheese"
-
-
-class Margherita(BasePizza):
+# IS-A BasePizza
+class FarmHouse(BasePizza):
     def get_cost(self):
-        return 10
+        return 150
 
-    def get_ingredients(self):
-        return "Tomato, Cheese"
-
-
+# cheese decorator | HAS-A BasePizza
 class ExtraCheese(BasePizza):
-    def __init__(self, pizza):
-        self.pizza = pizza
+    def __init__(self, base_pizza: BasePizza):
+        self.base_pizza = base_pizza
 
-    def get_cost(self):
-        return self.pizza.get_cost() + 2
+    def get_cost(self)-> int:
+        return self.base_pizza.get_cost() + 100
 
-    def get_ingredients(self):
-        return self.pizza.get_ingredients() + ", Extra Cheese"
-
-
+# Pan decorator | HAS-A BasePizza
 class ThickPanPizza(BasePizza):
-    def __init__(self, pizza):
-        self.pizza = pizza
+    def __init__(self, base_pizza: BasePizza):
+        self.base_pizza = base_pizza
 
-    def get_cost(self):
-        return self.pizza.get_cost() + 5
+    def get_cost(self) -> int:
+        return self.base_pizza.get_cost() + 200
 
-    def get_ingredients(self):
-        return self.pizza.get_ingredients() + ", Thick Pan"
+
+
+# buy pizza
+margitta: BasePizza = Margaritta()
+print('MAR', margitta.get_cost())
+
+# extra cheese | Decorating
+margitta_extra_cheese: BasePizza = ExtraCheese(margitta)
+print('Extra Cheese MAR',margitta_extra_cheese.get_cost())
+
+# extra pan mar | Decorating a decorator
+margitta_extra_pan: BasePizza = ThickPanPizza(margitta_extra_cheese)
+print('Extra Pan MAR', margitta_extra_pan.get_cost())
+
+# # buy pizza
+farm: BasePizza = FarmHouse()
+print('FARM', farm.get_cost())
+
+# extra pan
+margitta_extra_cheese: BasePizza = ThickPanPizza(farm)
+print('Extra Pan Farm',margitta_extra_cheese.get_cost())
 
 ```
 
-As we can from the example, we are able to decorate a base pizza with multiple toppings and modifiers at runtime.
+As we can see from the example, we are able to decorate a base pizza with multiple toppings and modifiers at runtime.
 
 ## Creational Patterns
 
@@ -275,54 +294,69 @@ A factory pattern is a creational design pattern that provides an interface for 
 
 ```python
 
-class Car:
-    def __init__(self, name):
-        self.name = name
+class Car(ABC):
+    @abstractmethod
+    def car_name(self):
+        pass
 
-    def get_name(self):
-        return self.name
-
-class Alto(Car):
-    def __init__(self):
-        super().__init__("Alto")
-
-class Swift(Car):
-    def __init__(self):
-        super().__init__("Swift")
-
-class Mercedes(Car):
-    def __init__(self):
-        super().__init__("Mercedes")
-
-class BMW(Car):
-    def __init__(self):
-        super().__init__("BMW")
+class Merc(Car):
+    def car_name(self):
+        return "GLA 200"
 
 
-class CarFactory:
-    def create_car(self, name):
-        if name == "Alto":
-            return Alto()
-        elif name == "Swift":
-            return Swift()
+class BWM(Car):
+    def car_name(self):
+        return "M5 Competition"
+
+class Tiago(Car):
+    def car_name(self):
+        return "TATA , desh ka loha"
+
+class Creta(Car):
+    def car_name(self):
+        return "Chapri Car"
 
 
-class LuxuryCarFactory:
-    def create_car(self, name):
-        if name == "Mercedes":
-            return Mercedes()
-        elif name == "BMW":
-            return BMW()
+class Factory(ABC):
+    @abstractmethod
+    def get_car(self) -> Car:
+        pass
+
+# grping of lux cars
+class LuxFactory(Factory):
+    def get_car(self, car_name: str):
+        if car_name == "BMW":
+            return BWM()
+        if car_name == "MERC":
+            return Merc()
+
+# grping of ord cars
+class OrdFactory(Factory):
+    def get_car(self, car_name: str):
+        if car_name == "TATA":
+            return Tiago()
+        if car_name == "HYUNDAI":
+            return Creta()
 
 
-car_type = "LUXURY"
-if car_type == "LUXURY":
-    car_factory = LuxuryCarFactory()
-else:
-    car_factory = CarFactory()
+class MainFactory:
+    def select_car(self, car_type: str):
+        if car_type == "LUXURY":
+            return LuxFactory()
+        if car_type == "ORD":
+            return OrdFactory()
 
 
-car_factory.create_car("Alto")
+
+main_f = MainFactory()
+car_f_lux = main_f.select_car("LUXURY")
+bmw = car_f_lux.get_car("BMW")
+
+car_f_ord = main_f.select_car("ORD")
+tata = car_f_ord.get_car("TATA")
+
+print("CARS for today", bmw.car_name(), ":",tata.car_name())
+
 
 ```
 
@@ -384,20 +418,59 @@ request = (HttpRequest.Builder()
 
 ### Singleton Pattern
 
-Singleton Pattern ensures that an instance is created only once; the instance then can be used as a shared resource like config manager, db connections etc.
+The Singleton Pattern ensures that a class has **only one instance** throughout the application's lifecycle, providing a global point of access to that instance. It's commonly used for shared resources like configuration managers, database connection pools, logging services, or caches.
+
+**Why use Singleton?**
+- Ensures consistent state across the entire application
+- Prevents wasteful creation of multiple instances for expensive resources
+- Provides controlled access to shared resources
+
+**Thread-Safe Implementation:**
+
+A naive singleton can break in multi-threaded environments where two threads might create separate instances simultaneously. The solution is **double-checked locking**:
 
 ```python
 
-class StorageConnection:
-    def __init__(self, info):
-        self.info = info
-        self.conn = None
+class DatabaseConnection:
+    _instance = None
+    
+    def __new__(cls, connection_string: str = ""):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialize(connection_string)
+        return cls._instance
+    
+    def _initialize(self, connection_string: str):
+        self.connection_string = connection_string
+        self.pool = self._create_pool()
+    
+    def _create_pool(self):
+        print(f"Creating connection pool for: {self.connection_string}")
+        return {"active": True}
 
-    def _get_conn(self):
-        if not self.conn:
-            self.conn = Conn(self.info)
-        return self.conn
+# Usage - all calls return the SAME instance
+db1 = DatabaseConnection("postgres://localhost:5432/mydb")
+db2 = DatabaseConnection()  # Ignores new connection string
 
+print(db1 is db2)  # True - same object
 ```
 
-`_get_conn` is what makes the Singleton.
+**Simpler Python Alternative (Module-level Singleton):**
+
+Python modules are inherently singletons. A simpler approach:
+
+```python
+# config.py - this entire module acts as a singleton
+_settings = None
+
+def get_settings():
+    global _settings
+    if _settings is None:
+        _settings = load_config_from_file()
+    return _settings
+```
+
+**When NOT to use Singleton:**
+- When you need different configurations in tests vs production
+- When the global state makes code harder to reason about
+- When dependency injection would be cleaner
