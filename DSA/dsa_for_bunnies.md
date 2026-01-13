@@ -1,14 +1,14 @@
 ## DSA for Bunnies by Team Sikhsa
 
-#### Math
+### Math
 
 [All Division Highest Score](https://leetcode.com/problems/all-divisions-with-the-highest-score-of-a-binary-array/description/)
 
-#### Two pointers
+### Two pointers
 
 [Closest pair from two arrays](https://www.geeksforgeeks.org/problems/find-the-closest-pair-from-two-arrays4215/1)
 
-#### Sliding windows
+### Sliding windows
 
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
 
@@ -35,6 +35,10 @@ for right in range(len(arr)):
 
 ```
 
-#### Arrays
+### Greedy
+
+[Max number of 1s II](https://www.geeksforgeeks.org/dsa/max-number-of-one-ii/)
+
+### Arrays
 
 [Min and 2min](https://www.geeksforgeeks.org/problems/find-the-smallest-and-second-smallest-element-in-an-array3226/1#using-single-pass)
