@@ -1,6 +1,6 @@
 ## DSA for Bunnies by Team Sikhsa
 
-### Math
+### Prefix-Suffix Sum
 
 [All Division Highest Score](https://leetcode.com/problems/all-divisions-with-the-highest-score-of-a-binary-array/description/)
 
