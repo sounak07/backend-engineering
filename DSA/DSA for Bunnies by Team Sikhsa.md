@@ -4,13 +4,34 @@
 ### Two pointers
 [Closest pair from two arrays](https://www.geeksforgeeks.org/problems/find-the-closest-pair-from-two-arrays4215/1)
 [Pair Sum closest to 0](https://www.geeksforgeeks.org/problems/two-numbers-with-sum-closest-to-zero1737/1)
+[Find all pairs in a given sum](https://www.geeksforgeeks.org/problems/find-all-pairs-whose-sum-is-x5808/1)
+
+```python
+# Pattern for duplicate counting
+
+val1 = arr1[i]
+val2 = arr2[j]
+
+c1 = 0
+while i < l1 and arr1[i] == val1:
+	c1 += 1
+	i += 1
+	
+c2 = 0
+while j >= 0 and arr2[j] == val2:
+	c2 += 1
+	j -= 1
+
+# Cartesian product of duplicates
+for _ in range(c1 * c2):
+	res.append([val1, val2])
+```
 ### Sliding windows
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
 [Count Pairs less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
 
-Template for Sliding window Problems
-
 ```python
+# Template for Sliding window Problems
 
 left = 0
 state = 0 # tracks "badness" (zeros, distinct chars, etc.)
