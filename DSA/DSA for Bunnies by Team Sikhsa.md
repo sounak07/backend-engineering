@@ -2,9 +2,14 @@
 ### Prefix-Suffix Sum
 [All Division Highest Score](https://leetcode.com/problems/all-divisions-with-the-highest-score-of-a-binary-array/description/)
 ### Two pointers
+
 [Closest pair from two arrays](https://www.geeksforgeeks.org/problems/find-the-closest-pair-from-two-arrays4215/1)
 [Pair Sum closest to 0](https://www.geeksforgeeks.org/problems/two-numbers-with-sum-closest-to-zero1737/1)
 [Find all pairs in a given sum](https://www.geeksforgeeks.org/problems/find-all-pairs-whose-sum-is-x5808/1)
+[Count Pairs sum less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
+[Union of arrays](https://www.geeksforgeeks.org/problems/union-of-two-sorted-arrays-1587115621/1)
+
+- Always Skip Duplicates before inserting. 
 
 ```python
 # Pattern for duplicate counting
@@ -26,6 +31,7 @@ while j >= 0 and arr2[j] == val2:
 for _ in range(c1 * c2):
 	res.append([val1, val2])
 ```
+
 ### Sliding windows
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
 [Count Pairs less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
