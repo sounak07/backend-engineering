@@ -8,6 +8,10 @@
 [Find all pairs in a given sum](https://www.geeksforgeeks.org/problems/find-all-pairs-whose-sum-is-x5808/1)
 [Count Pairs sum less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
 [Union of arrays](https://www.geeksforgeeks.org/problems/union-of-two-sorted-arrays-1587115621/1)
+[Merge two sorted arrays](https://leetcode.com/problems/merge-sorted-array/)
+[Remove Duplicates from sorted list II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
+[Remove Element](https://leetcode.com/problems/remove-element/submissions/1888883252/)
+
 
 - Always Skip Duplicates before inserting. 
 
