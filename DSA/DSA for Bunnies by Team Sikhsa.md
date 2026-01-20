@@ -12,7 +12,6 @@
 [Remove Duplicates from sorted list II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
 [Remove Element](https://leetcode.com/problems/remove-element/submissions/1888883252/)
 
-
 - Always Skip Duplicates before inserting. 
 
 ```python
@@ -35,6 +34,11 @@ while j >= 0 and arr2[j] == val2:
 for _ in range(c1 * c2):
 	res.append([val1, val2])
 ```
+
+### 3 Pointers
+
+[3 Sum](https://leetcode.com/problems/3sum/description/)
+[Sort Colors](https://leetcode.com/problems/sort-colors/description/)
 
 ### Sliding windows
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
