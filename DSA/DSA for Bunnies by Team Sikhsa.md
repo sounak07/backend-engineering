@@ -41,7 +41,13 @@ for _ in range(c1 * c2):
 [Sort Colors](https://leetcode.com/problems/sort-colors/description/)
 [4 Sum](https://leetcode.com/problems/4sum/)
 
+### Boyer-Moore Algo
+
+[Majority Element](https://leetcode.com/problems/majority-element/description/)
+[Majority Element II](https://leetcode.com/problems/majority-element-ii/description/)
+
 ### Sliding windows
+
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
 [Count Pairs less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
 
