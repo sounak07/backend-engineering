@@ -39,6 +39,7 @@ for _ in range(c1 * c2):
 
 [3 Sum](https://leetcode.com/problems/3sum/description/)
 [Sort Colors](https://leetcode.com/problems/sort-colors/description/)
+[4 Sum](https://leetcode.com/problems/4sum/)
 
 ### Sliding windows
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
