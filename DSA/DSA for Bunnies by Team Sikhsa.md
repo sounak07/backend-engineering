@@ -12,9 +12,9 @@
 [Remove Duplicates from sorted list II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
 [Remove Element](https://leetcode.com/problems/remove-element/submissions/1888883252/)
 [Version compare](https://leetcode.com/problems/compare-version-numbers/description/)
-[Valid Palimdrome](https://leetcode.com/problems/valid-palindrome/submissions/1896782577/)
+[Valid Palindrome](https://leetcode.com/problems/valid-palindrome/submissions/1896782577/)
 [Reverse words in a string](https://leetcode.com/problems/reverse-words-in-a-string/description/)
-
+[Next Permutation](https://leetcode.com/problems/next-permutation/)
 
 - Always Skip Duplicates before inserting. 
 
