@@ -11,6 +11,10 @@
 [Merge two sorted arrays](https://leetcode.com/problems/merge-sorted-array/)
 [Remove Duplicates from sorted list II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
 [Remove Element](https://leetcode.com/problems/remove-element/submissions/1888883252/)
+[Version compare](https://leetcode.com/problems/compare-version-numbers/description/)
+[Valid Palimdrome](https://leetcode.com/problems/valid-palindrome/submissions/1896782577/)
+[Reverse words in a string](https://leetcode.com/problems/reverse-words-in-a-string/description/)
+
 
 - Always Skip Duplicates before inserting. 
 
@@ -42,6 +46,8 @@ for _ in range(c1 * c2):
 [4 Sum](https://leetcode.com/problems/4sum/)
 
 ### Boyer-Moore Algo
+
+Note: Everything depends on how many majority elements can there be.
 
 [Majority Element](https://leetcode.com/problems/majority-element/description/)
 [Majority Element II](https://leetcode.com/problems/majority-element-ii/description/)
