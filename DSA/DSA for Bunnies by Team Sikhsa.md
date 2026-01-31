@@ -56,6 +56,7 @@ Note: Everything depends on how many majority elements can there be.
 
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
 [Count Pairs less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
+[Longest Substring without repeating characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/1903518498/)
 
 ```python
 # Template for Sliding window Problems
