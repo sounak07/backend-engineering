@@ -81,6 +81,11 @@ for right in range(len(arr)):
 
 ```
 
+### Hashing
+
+[Longest Subarray with Sum K](https://www.geeksforgeeks.org/problems/longest-sub-array-with-sum-k0809/1)
+
+
 ### Greedy
 [Max number of 1s II](https://www.geeksforgeeks.org/dsa/max-number-of-one-ii/)
 
