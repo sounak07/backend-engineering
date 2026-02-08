@@ -57,6 +57,7 @@ Note: Everything depends on how many majority elements can there be.
 [Maximum 1s](https://www.geeksforgeeks.org/problems/maximize-number-of-1s0905/1)
 [Count Pairs less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
 [Longest Substring without repeating characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/1903518498/)
+[Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/)
 
 ```python
 # Template for Sliding window Problems
@@ -64,7 +65,7 @@ Note: Everything depends on how many majority elements can there be.
 left = 0
 state = 0 # tracks "badness" (zeros, distinct chars, etc.)
 answer = 0
-
+ 
 for right in range(len(arr)):
 	# 1️⃣ Expand window
 	
@@ -86,9 +87,13 @@ for right in range(len(arr)):
 
 [Longest Subarray with Sum K](https://www.geeksforgeeks.org/problems/longest-sub-array-with-sum-k0809/1)
 
-
 ### Greedy
 [Max number of 1s II](https://www.geeksforgeeks.org/dsa/max-number-of-one-ii/)
 
 ### Arrays
 [Min and 2min](https://www.geeksforgeeks.org/problems/find-the-smallest-and-second-smallest-element-in-an-array3226/1#using-single-pass)
+
+### Binary Search
+[Sorted Insert Position](https://www.geeksforgeeks.org/problems/search-insert-position-of-k-in-a-sorted-array/1)
+
+
