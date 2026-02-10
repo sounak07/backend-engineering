@@ -58,6 +58,12 @@ Note: Everything depends on how many majority elements can there be.
 [Count Pairs less than target](https://www.geeksforgeeks.org/problems/count-pairs-whose-sum-is-less-than-target/1)
 [Longest Substring without repeating characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/submissions/1903518498/)
 [Longest Substring with At Least K Repeating Characters](https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/)
+[Count Complete Subarrays](https://leetcode.com/problems/count-complete-subarrays-in-an-array/)
+
+```python
+AT_MOST(K) = EXACT(1) + EXACT(2) + ... + EXACT(K)
+Exactly(K) = Atmost(k) - Atmost(k-1)
+```
 
 ```python
 # Template for Sliding window Problems
@@ -95,5 +101,7 @@ for right in range(len(arr)):
 
 ### Binary Search
 [Sorted Insert Position](https://www.geeksforgeeks.org/problems/search-insert-position-of-k-in-a-sorted-array/1)
+[Capacity to ship](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
+
 
 
