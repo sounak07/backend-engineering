@@ -102,6 +102,13 @@ for right in range(len(arr)):
 ### Binary Search
 [Sorted Insert Position](https://www.geeksforgeeks.org/problems/search-insert-position-of-k-in-a-sorted-array/1)
 [Capacity to ship](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
+[Search in 2d matrix](https://leetcode.com/problems/search-a-2d-matrix/)
+[Search in 2d matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
+[Aggressive cows](https://www.geeksforgeeks.org/problems/aggressive-cows/1)
+[Search in rotated Sorted list](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/)
+
+
+
 
 
 

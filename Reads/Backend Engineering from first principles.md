@@ -334,6 +334,11 @@ After going through figma wireframes, we need to design db schemas and finally w
 - APIs should have some sane defaults, also should have checks for unreasonable  values passed for defaults.
 - A custom action API should use POST and the API structure for a clone API should look like `{base}/projects/{id}/clone` 
 
+
+#### Databases
+
+
+
 #### References
 
 [Medium](https://medium.com/identity-beyond-borders/oauth-1-0-vs-oauth-2-0-e36f8924a835)
