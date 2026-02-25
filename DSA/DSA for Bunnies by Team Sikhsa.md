@@ -106,6 +106,8 @@ for right in range(len(arr)):
 [Search in 2d matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
 [Aggressive cows](https://www.geeksforgeeks.org/problems/aggressive-cows/1)
 [Search in rotated Sorted list](https://leetcode.com/problems/search-in-rotated-sorted-array-ii/)
+[Find min in rotated list](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/submissions/1927707383/)
+[Find Peak Element](https://leetcode.com/problems/find-peak-element/)
 
 
 
