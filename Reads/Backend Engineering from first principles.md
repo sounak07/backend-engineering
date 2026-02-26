@@ -337,8 +337,28 @@ After going through figma wireframes, we need to design db schemas and finally w
 
 #### Databases
 
+##### Why can't we store data in files
 
+- Any data to add/update/read requires data to be parsed from files which can be very slow in files.
+- A structure can't be enforced into the files storage
+- Concurrency is a major setback with files, there are no concept of locks, transactions in files.
 
+##### Relational vs Non-relational
+
+| Relational                 | Non relational                 |
+| -------------------------- | ------------------------------ |
+| Data is structured         | There is no specific structure |
+| Predefined schemas         | There is schema on write       |
+| Data integrity is ensured  | No Integrity is maintained     |
+| Stored as rows and columns | Stored as documents            |
+
+##### Data Types in Postgres
+
+![Screenshot_2026-02-26_at_11.39.57_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-02-26_at_11.39.57_PM.png)
+
+- Small int < int < big int - Size of numbers we can store in these.
+- Decimal(10,2) mean -> Total number of integers we can store. 10 in total, of which max 2 can be post "." like. 12345678.12
+- 
 #### References
 
 [Medium](https://medium.com/identity-beyond-borders/oauth-1-0-vs-oauth-2-0-e36f8924a835)
