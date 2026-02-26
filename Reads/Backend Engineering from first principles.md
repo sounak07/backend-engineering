@@ -370,8 +370,8 @@ After going through figma wireframes, we need to design db schemas and finally w
 ***Note***: Postgres is case sensitive, so for postgres always snake case should be used, e.g. fullName is interpreted as fullname, we can use quotes to avoid that but adding quotes every time is cumbersome. 
 
 Referencial integrity can be ensure our data is not corrupt when there are relationships among tables. 
-- on delete casade - to delete the associated records of the target record 
-- on delete restrict - to prevent delete as long as there are associated records with target records
+- on delete casade - to delete the target record if its parent gets deleted
+- on delete restrict - to prevent delete as long as there is associated parent with target records. 
 - on delete set null/ set default to set default values in case of delete with no restrictions. 
 
 #### References
