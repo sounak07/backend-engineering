@@ -357,8 +357,23 @@ After going through figma wireframes, we need to design db schemas and finally w
 ![Screenshot_2026-02-26_at_11.39.57_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-02-26_at_11.39.57_PM.png)
 
 - Small int < int < big int - Size of numbers we can store in these.
-- Decimal(10,2) mean -> Total number of integers we can store. 10 in total, of which max 2 can be post "." like. 12345678.12
-- 
+- `Decimal(10,2)` mean -> Total number of integers we can store. 10 in total, of which max 2 can be post "." like. 12345678.12
+- `char` leaves out extra spaces if char length is less then specified.
+-  `varchar` does not do that, it only occupies space as per the length of the characters stored. Its limited X chars specified in the schemas.
+- `TEXT` can store any number of chars upto certain size.
+- `TEXT` is the modern form of varchar.
+- TimestampZ stores the time zone as well in the stamp.
+- JSON vs JSONB - JSON stores the object is plain text format, jsonb converts it into postgres's native json format for efficiency. 
+
+![Screenshot_2026-02-27_at_12.06.45_AM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-02-27_at_12.06.45_AM.png)
+
+***Note***: Postgres is case sensitive, so for postgres always snake case should be used, e.g. fullName is interpreted as fullname, we can use quotes to avoid that but adding quotes every time is cumbersome. 
+
+Referencial integrity can be ensure our data is not corrupt when there are relationships among tables. 
+- on delete casade - to delete the associated records of the target record 
+- on delete restrict - to prevent delete as long as there are associated records with target records
+- on delete set null/ set default to set default values in case of delete with no restrictions. 
+
 #### References
 
 [Medium](https://medium.com/identity-beyond-borders/oauth-1-0-vs-oauth-2-0-e36f8924a835)
