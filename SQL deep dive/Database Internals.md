@@ -22,7 +22,7 @@ With time as these outdated rows keep increasing, a command vaccumm is not run c
 **MySQL** - ***Undo log***
 
 MySQL doesn't have the concept of updated and outdated rows, MySQL updates the rows instantly but maintains something called undo log storing the previous values for the other transactions to check. 
-Each row stores meta called xid and ptr, storing the transaction id that modified it and the id pointing to the undo log data for other transactions to refer to. 
+Each row stores meta data called xid and ptr, storing the transaction id that modified it and the id pointing to the undo log data for other transactions to refer to. 
 This approach removes the extra layer of maintenance of compaction. 
 
 ![Screenshot_2026-02-07_at_6.36.19_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-02-07_at_6.36.19_PM.png)
@@ -43,7 +43,7 @@ This approach removes the extra layer of maintenance of compaction.
 **PostgreSQL**
 
 - Uses a more **optimistic approach**
-- Uses predicate locks and lock timeouts
+- Uses predicate locks and lock timeouts. These locks are not used to block access to rows but rather to check what rows are being modified by which transaction.
 - Allows transactions to proceed
 - At commit time, if a conflict is detected:
     - One transaction commits
@@ -62,9 +62,12 @@ Different strategies, same goal: **ensure the system keeps moving**.
 
 **Phantom reads** - 
 
+When a select query in a transaction running multiple times reads different values due the values being modified by a different transaction. 
 
 
+![Screenshot_2026-03-05_at_12.28.06_AM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-03-05_at_12.28.06_AM.png)
 
+[More details](obsidian://open?vault=reactivist's%20vault&file=engineering_brain_fork%2FEngineering%20Notes%2FSQL%20deep%20dive%2FIsolation%20Levels%20in%20SQL)
 #### ACID
 
 **Atomicity**

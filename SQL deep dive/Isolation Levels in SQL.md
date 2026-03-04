@@ -72,7 +72,7 @@ Predicate locks - Instead of locking a single record, lock all records that matc
 
 Index range locking - As with predicate locking we lock based on the predicate condition but in this we use only the indexed rows in the predicate condition to lock rows. This type of locking is faster then predicate because its much faster to find the rows to lock. This comes with the fact that we are locking more rows then necessary , so this should be implemented with caution.
 
-Perf issues in 2PL
+**Perf issues in 2PL**
 Acquiring and releasing locks are expensive so it does introduce latency to systems. Also 2PL does not allow to modify records concurrently so access patterns that require a lot of updates will low things down.
 Also long running transactions can get aborted due to deadlocks needs to be restarted with all its resources and context.
 
