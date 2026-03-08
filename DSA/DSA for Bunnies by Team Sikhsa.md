@@ -114,7 +114,9 @@ for right in range(len(arr)):
 [Subsets I](https://leetcode.com/problems/subsets/description/)
 [Subsets ||](https://leetcode.com/problems/subsets-ii/description/)
 [Combination Sum](https://leetcode.com/problems/combination-sum/description/)
-[Combination Sum II]()
+[Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
+
+Note: Backtracking tip - Always check solution condition first and then termination condition
 
 
 
