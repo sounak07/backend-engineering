@@ -29,7 +29,10 @@
 
 [Next Permutation](https://leetcode.com/problems/next-permutation/)
 
-  
+[kth element of two sorted arrays](https://www.geeksforgeeks.org/problems/k-th-element-of-two-sorted-array1317/1)
+
+
+
 
 - Always Skip Duplicates before inserting.
 
