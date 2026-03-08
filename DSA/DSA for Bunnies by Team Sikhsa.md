@@ -109,14 +109,14 @@ for right in range(len(arr)):
 [Find min in rotated list](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/submissions/1927707383/)
 [Find Peak Element](https://leetcode.com/problems/find-peak-element/)
 
-
 ### Recursion
 [Subsets I](https://leetcode.com/problems/subsets/description/)
 [Subsets ||](https://leetcode.com/problems/subsets-ii/description/)
 [Combination Sum](https://leetcode.com/problems/combination-sum/description/)
 [Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)
 
-Note: Backtracking tip - Always check solution condition first and then termination condition
+***Backtracking tip*** - Always check solution condition first and then termination condition
+
 
 
 
