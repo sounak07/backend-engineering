@@ -82,5 +82,36 @@ All the actions in a transaction needs to be treated as an atomic operation.  Al
 Every transaction must take the database from one valid state to another adhering the constraints , schemas and invariants. 
 Databases enforce this by default, a good error handling from the application side plays an important role.
 
+
+#### Sharding in databases
+
+Sharding is basically breaking the database down into multiple databases and splitting the data among them to handle the load on too much of data. 
+
+![Screenshot_2026-04-21_at_10.29.00_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_10.29.00_PM.png)
+
+Shared key and distribution strategy plays an important role in creating an efficient sharded ecosystem to avoid hot shards.
+
+![Screenshot_2026-04-21_at_10.40.24_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_10.40.24_PM.png)
+
+user_id as key in social media makes more sense, while its order_id for ecom. 
+Keys like created_at and is_premium does not make sense as they would create too much pressure on a specific shard. 
+
+**Hash based sharding**
+
+![Screenshot_2026-04-21_at_10.43.59_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_10.43.59_PM.png)
+
+**Directory Based sharding**
+
+![Screenshot_2026-04-21_at_11.08.32_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_11.08.32_PM.png)
+
+##### Challenges in shard
+
+**Hot shards**
+Shards which gets a lot of traffic due to may a lot of keys ending up there could lead to hot shards. We can randomise the hash keys by adding a fixed string before hash key.
+Celebrity shards can also be used where we create a completely separate shard key for use-cases with huge traffic. 
+
+![Screenshot_2026-04-21_at_11.15.16_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_11.15.16_PM.png)
+
+
 #### References 
 [What are transactions?](https://planetscale.com/blog/database-transactions)
