@@ -107,11 +107,48 @@ Keys like created_at and is_premium does not make sense as they would create too
 ##### Challenges in shard
 
 **Hot shards**
+
 Shards which gets a lot of traffic due to may a lot of keys ending up there could lead to hot shards. We can randomise the hash keys by adding a fixed string before hash key.
 Celebrity shards can also be used where we create a completely separate shard key for use-cases with huge traffic. 
 
 ![Screenshot_2026-04-21_at_11.15.16_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_11.15.16_PM.png)
 
 
+**Cross shard queries**
+
+Queries that require data from multiple shards might lead to slow queries trying to fetch data. 
+
+Caching is one way to eliminate that. Tradeoff here is users might get outdated data if they query is being done within the ttl time.
+
+![Screenshot_2026-04-21_at_11.18.05_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_11.18.05_PM.png)
+
+Denormalisation is another way. In case we need to visit the same shards again and again, we can try to club the data from 2nd shard and put it in 1st. This way we avoid doing cross shard queries but we need to write in both shards so the writes become a bit more complex, a trade off we need to consider. 
+
+![Screenshot_2026-04-21_at_11.22.52_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_11.22.52_PM.png)
+
+**Maintaining Consistency**
+
+![Screenshot_2026-04-21_at_11.27.27_PM](https://raw.githubusercontent.com/sounak07/backend-engineering/main/assets/Screenshot_2026-04-21_at_11.27.27_PM.png)
+
+Maintaining consistency in data across multiple shards which are part of a single transaction is a huge pain. The textbook way handle is 2 phase commit but that needs a co-ordinator and production systems try to avoid them. Aim to may be avoid cross shard transaction at together.
+
+**Sage Pattern**
+It states that each action has a opposite compensating action in case the action fails. In our example, in case the transaction post money deduction fails, we don't rollback we identify the compensating action and run it. 
+
+##### When to use shards ?
+
+- Storage - Very high storage
+- Write throughput - Very high write rate 50k writes/sec.
+- Read throughput - Read replicas fail to handle the requests.
+
+You dont always need to shard. If you do, propose the following - 
+
+- Propose a shard key - wrong key could lead to bad outcomes
+- Choose a distribution strategy - usually its consistent hashing
+- Discuss the trade-offs - caching, celebrity shards, cross shard queries
+- Discuss how to handle the growth - Add X shards, add more later , redistribute using consistent hashing. 
+
+
 #### References 
 [What are transactions?](https://planetscale.com/blog/database-transactions)
+[Sharding](https://www.youtube.com/watch?v=L521gizea4s)
