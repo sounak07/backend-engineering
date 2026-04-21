@@ -147,8 +147,6 @@ You dont always need to shard. If you do, propose the following -
 - Choose a distribution strategy - usually its consistent hashing
 - Discuss the trade-offs - caching, celebrity shards, cross shard queries
 - Discuss how to handle the growth - Add X shards, add more later , redistribute using consistent hashing. 
-
-
 #### References 
 [What are transactions?](https://planetscale.com/blog/database-transactions)
-[Sharding](https://www.youtube.com/watch?v=L521gizea4s)
+[Sharding by Hello Interview](https://www.youtube.com/watch?v=L521gizea4s)
