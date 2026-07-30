@@ -54,3 +54,14 @@ X Million(10^6) users * Y MB Space used/user (10^6) = XY TB (10^12)
 - **Request a server can serve** - So we have 50 threads in a server , so each server can serve 100 requests (1/2 sec * 50 threads), so if we have to serve 100k req/sec it will be 100 machines. 
 - **Trade-offs (CAP)** - Based on the requirement of the system , we choose the strategy. 
 
+[https://www.designgurus.io/blog/back-of-the-envelope-system-design-interview](https://www.designgurus.io/blog/back-of-the-envelope-system-design-interview)
+
+  
+Example - 
+- 100 million DAU * 10 posts/user = 1 billion posts/day
+- 1 billion posts/day / 86,400 seconds/day ≈ 11,574 requests/second
+- 500 million users * 2 photos/user * 2 MB/photo = 2,000,000,000 MB/day
+- For a video streaming service with 10 million users streaming 1080p videos at 4 Mbps, you can estimate the required bandwidth: 
+  
+  10 million users * 4 Mbps = 40,000,000 Mbps
+- Latency estimation - Avg latency from different resources 50ms + db calls 100ms + compute 50 ms = 200 ms
